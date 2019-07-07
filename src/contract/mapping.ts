@@ -1,10 +1,14 @@
-type ContractType = {
+type ControllerType = {
+  Vue: {
     addVue: {
       req: AddVueReq
-      res: CommonRes
+      res: any
     }
     getVue: {
       req: GetVueReq
       res: GetVueRes
     }
   }
+}
+
+type ContractType = ControllerType['Vue']

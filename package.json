@@ -22,6 +22,8 @@
     "dev:tt": "npm run build:tt -- --watch",
     "dev:h5": "npm run build:h5 -- --watch",
     "dev:rn": "npm run build:rn -- --watch",
+    "start": "yarn dev:weapp",
+    "build": "yarn build:weapp",
     "deploy": "node deploy.js development"
   },
   "author": "",
