@@ -20,8 +20,8 @@ interface GetVueRes extends BaseVue {
   comments: string[]
   // TODO: should be type User not number
   create_by: number
-  create_time: Date
-  update_time: Date
+  create_time: number
+  update_time: number
 }
 
 interface UpdateVueReq extends BaseVue {
