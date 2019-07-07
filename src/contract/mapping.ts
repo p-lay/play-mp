@@ -9,6 +9,12 @@ type ControllerType = {
       res: GetVueRes
     }
   }
+  Qiniu: {
+    getQiniuToken: {
+      req: {} // empty body
+      res: GetQiniuTokenRes
+    }
+  }
 }
 
-type ContractType = ControllerType['Vue']
+type ContractType = ControllerType['Vue'] & ControllerType['Qiniu']

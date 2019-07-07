@@ -15,7 +15,7 @@ interface GetVueReq {
   vue_id: number
 }
 
-interface GetVueRes extends BaseVue {
+interface VueAppendInfo {
   vue_id: number
   comments: string[]
   // TODO: should be type User not number
@@ -23,6 +23,8 @@ interface GetVueRes extends BaseVue {
   create_time: number
   update_time: number
 }
+
+interface GetVueRes extends BaseVue, VueAppendInfo {}
 
 interface UpdateVueReq extends BaseVue {
   vue_id: number

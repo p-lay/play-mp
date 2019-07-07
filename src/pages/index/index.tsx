@@ -2,7 +2,6 @@ import { ComponentType } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button, Text } from '@tarojs/components'
 import { observer, inject } from '@tarojs/mobx'
-
 import './index.scss'
 import { request } from '../../util/request'
 
@@ -33,23 +32,12 @@ class Index extends Component {
     navigationBarTitleText: '首页',
   }
 
-  componentWillMount() {}
-
-  componentWillReact() {
-    console.log('componentWillReact')
+  componentDidMount() {
+    // request()
   }
 
-  componentDidMount() {}
-
-  componentWillUnmount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
-
   onGetVue = () => {
-    request('getVue', { vue_id: 6 }).then(res => {
-    })
+    Taro.navigateTo({ url: '/pages/vue/update' })
   }
 
   render() {
@@ -58,8 +46,7 @@ class Index extends Component {
     } = this.props
     return (
       <View className="index">
-        <Button onClick={this.onGetVue}>getVue</Button>
-        <Text>{counter}</Text>
+        <Button onClick={this.onGetVue}>vue</Button>
       </View>
     )
   }
