@@ -2,7 +2,7 @@
 PROTOC_GEN_TS_PATH="./node_modules/protoc-gen-json-ts/bin/protoc-gen-json-ts"
 
 # Directory to write generated code to (.js and .d.ts files) 
-OUT_DIR="./src/service"
+OUT_DIR="./src/contract"
 
 
 contract:
