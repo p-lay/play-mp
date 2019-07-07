@@ -3908,6 +3908,10 @@ gonzales-pe@^4.2.3:
   dependencies:
     minimist "1.1.x"
 
+google-protobuf@^3.5.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/google-protobuf/-/google-protobuf-3.8.0.tgz#4fd2ee3a97751cb543dc5de85ffd264aff9f4980"
+
 got@^6.7.1:
   version "6.7.1"
   resolved "https://registry.yarnpkg.com/got/-/got-6.7.1.tgz#240cd05785a9a18e561dc1b44b41c763ef1e8db0"
@@ -6624,6 +6628,12 @@ prop-types@^15.5.10, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
     loose-envify "^1.4.0"
     object-assign "^4.1.1"
     react-is "^16.8.1"
+
+protoc-gen-json-ts@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/protoc-gen-json-ts/-/protoc-gen-json-ts-1.0.2.tgz#965bce8ca9024c859cd8730c33cbcd868af7fcf6"
+  dependencies:
+    google-protobuf "^3.5.0"
 
 proxy-addr@~2.0.5:
   version "2.0.5"
