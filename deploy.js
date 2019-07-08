@@ -5,8 +5,8 @@ const request = require('request')
 const util = require('util')
 
 const uploadConfig = {
-  getVersionUrl: 'http://play.eastasia.cloudapp.azure.com:3410/mp-version',
-  setVersionUrl: 'http://play.eastasia.cloudapp.azure.com:3410/mp-version/update',
+  getVersionUrl: 'https://version.matthew5.cn/mp-version',
+  setVersionUrl: 'https://version.matthew5.cn/mp-version/update',
 }
 const uploadParams = {
   env: 'development',
