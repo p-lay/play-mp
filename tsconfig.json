@@ -10,7 +10,6 @@
     "allowSyntheticDefaultImports": true,
     "outDir": "lib",
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "sourceMap": true,
     "baseUrl": ".",
     "rootDir": ".",

@@ -1,9 +1,10 @@
-import mapping from "../contract/_mapping"
-import { ContractGen } from "./contract.gen"
-import { DefinitionReplace } from "./definition.replace"
+import mapping from '../contract/_mapping'
+import { ContractGen } from './contract.gen'
+import { DefinitionReplace } from './definition.replace'
+import { resolve } from 'path'
 
-const sourceFolder = __dirname + "./src/contract"
-const outFolder = __dirname + "./src/type"
+const sourceFolder = resolve(__dirname, '../contract')
+const outFolder = resolve(__dirname, '../src/type')
 
 new ContractGen({ mapping, outFolder }).generate()
 new DefinitionReplace(sourceFolder, outFolder).replace()

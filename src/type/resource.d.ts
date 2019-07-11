@@ -1,6 +1,6 @@
 interface BaseResource {
   url: string
-  type?: "image" | "video"
+  type?: 'image' | 'video'
   description?: string
 }
 

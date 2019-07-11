@@ -12,7 +12,7 @@ function isResError(res: any) {
 export function request<T extends keyof ContractType>(
   method: T,
   params: ContractType[T]['req'],
-): CommonRes<ContractType[T]['res']> {
+): ContractType[T]['res'] {
   return taroRequest<T>({
     url: getUrl(method),
     data: params,
