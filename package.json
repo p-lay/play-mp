@@ -24,7 +24,8 @@
     "dev:rn": "npm run build:rn -- --watch",
     "start": "yarn dev:weapp",
     "build": "yarn build:weapp",
-    "deploy": "node deploy.js development"
+    "deploy": "node deploy.js development",
+    "gen": "ts-node nest-ts-gen/index.ts"
   },
   "author": "",
   "license": "MIT",
