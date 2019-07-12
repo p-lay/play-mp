@@ -64,21 +64,22 @@ export class ContractGen {
 
   private renderDtos(dtos: any) {
     let dtoStr = ''
-    for (const dto of Object.keys(dtos)) {
-      let dtoValue = dtos[dto as any]
-      if (dto == 'res') {
-        if (!dtoValue) {
-          dtoValue = 'CommonRes'
-        } else {
-          dtoValue = `CommonRes<${dtoValue}>`
-        }
-      } else {
-        if (!dtoValue) {
-          dtoValue = 'any'
-        }
-      }
-      dtoStr += `${this.addLine(3)}${dto}: ${dtoValue}`
+    const keys = Object.keys(dtos)
+    let reqTypeStr = dtos.req
+    if (!reqTypeStr || !keys.includes('req')) {
+      reqTypeStr = 'any'
     }
+    dtoStr += `${this.addLine(3)}req: ${reqTypeStr}`
+
+    const resType = dtos.res
+    let resTypeStr = resType
+    if (!resTypeStr || !keys.includes('res')) {
+      resTypeStr = 'CommonRes'
+    } else {
+      resTypeStr = `CommonRes<${resTypeStr}>`
+    }
+    dtoStr += `${this.addLine(3)}res: ${resTypeStr}`
+
     return dtoStr
   }
 
