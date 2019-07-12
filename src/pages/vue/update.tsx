@@ -14,7 +14,7 @@ type State = {} & BaseVue & Partial<VueAppendInfo>
 @observer
 class VueUpdate extends Component<Props, State> {
   config: Config = {
-    navigationBarTitleText: 'Vue',
+    navigationBarTitleText: 'update',
   }
 
   state: State = {

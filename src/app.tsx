@@ -1,7 +1,7 @@
-import "@tarojs/async-await"
+import '@tarojs/async-await'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { Provider } from '@tarojs/mobx'
-import Index from './pages/index'
+import MemoriaList from './pages/vue/list'
 
 import counterStore from './store/counter'
 
@@ -14,11 +14,10 @@ import './app.scss'
 // }
 
 const store = {
-  counterStore
+  counterStore,
 }
 
 class App extends Component {
-
   /**
    * 指定config的类型声明为: Taro.Config
    *
@@ -28,29 +27,31 @@ class App extends Component {
    */
   config: Config = {
     pages: [
+      'pages/vue/list',
       'pages/index/index',
-      'pages/vue/update'
+      'pages/vue/update',
+      'pages/vue/detail',
     ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black'
-    }
+      navigationBarTextStyle: 'black',
+    },
   }
 
-  componentDidMount () {}
+  componentDidMount() {}
 
-  componentDidShow () {}
+  componentDidShow() {}
 
-  componentDidHide () {}
+  componentDidHide() {}
 
-  componentDidCatchError () {}
+  componentDidCatchError() {}
 
-  render () {
+  render() {
     return (
       <Provider store={store}>
-        <Index />
+        <MemoriaList />
       </Provider>
     )
   }

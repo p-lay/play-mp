@@ -3,7 +3,6 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button, Text } from '@tarojs/components'
 import { observer, inject } from '@tarojs/mobx'
 import './index.scss'
-import { request } from '../../util/request'
 
 type PageStateProps = {
   counterStore: {
@@ -29,26 +28,14 @@ class Index extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '首页',
-  }
-
-  componentDidMount() {
-    // request()
-  }
-
-  onGetVue = () => {
-    Taro.navigateTo({ url: '/pages/vue/update' })
+    navigationBarTitleText: 'index',
   }
 
   render() {
     const {
       counterStore: { counter },
     } = this.props
-    return (
-      <View className="index">
-        <Button onClick={this.onGetVue}>vue</Button>
-      </View>
-    )
+    return <View className="index" />
   }
 }
 

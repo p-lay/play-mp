@@ -16,6 +16,13 @@ interface GetVueReq {
   vue_id: number
 }
 
+interface GetMemoriaListRes {
+  memorias: {
+    title: string
+    id: number
+  }[]
+}
+
 interface VueAppendInfo {
   vue_id: number
   comments: string[]
