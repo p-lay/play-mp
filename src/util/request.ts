@@ -12,14 +12,11 @@ function isResError(res: any) {
 export function request<T extends keyof ContractType>(
   method: T,
   params: ContractType[T]['req'],
-): ContractType[T]['res'] {
+): Promise<ContractType[T]['res']> {
   return taroRequest<T>({
     url: getUrl(method),
     data: params,
     method: 'POST',
-    header: {
-      // customer headers
-    },
   })
     .then(res => {
       if (isResError(res)) {
@@ -31,7 +28,7 @@ export function request<T extends keyof ContractType>(
         throw new Error(`api request error, method: ${method}`)
       }
 
-      return res.data as any
+      return (res.data as any).data
     })
     .catch(err => {
       showToast({ title: '网络错误, 请稍后重试' })

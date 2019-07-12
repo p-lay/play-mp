@@ -31,7 +31,7 @@ class MemoriaList extends Component<Props, State> {
   componentDidMount() {
     request('getMemoriaList', {}).then(res => {
       this.setState({
-        memorias: res.data.memorias,
+        memorias: res.memorias,
       })
     })
   }

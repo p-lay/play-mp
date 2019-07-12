@@ -3,7 +3,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button, Text, Input, Textarea, Image } from '@tarojs/components'
 import { observer, inject } from '@tarojs/mobx'
 import { request } from '../../util/request'
-import { uploadFiles, qiniuUrlBindSearch } from '../../util/qiniu'
+import { path } from '../../util/path'
 
 type Props = {}
 
@@ -21,58 +21,18 @@ class MemoriaDetail extends Component<Props, State> {
     resources: [],
   } as any
 
-  onTitleChange(event: any) {
-    this.setState({
-      title: event.detail.value,
-    })
-  }
-
-  onFeelingChange(event: any) {
-    this.setState({
-      feeling: event.detail.value,
-    })
-  }
-
-  onAddImage() {
-    const self = this
-    Taro.chooseImage({
-      success: async function(res) {
-        const uploadResult = await uploadFiles(res.tempFilePaths)
-        console.log('after image', uploadResult)
-        self.setState(prevState => ({
-          resources: prevState.resources.concat(
-            uploadResult.map(x => ({ url: x.uploadedUrl })),
-          ),
-        }))
-      },
-    })
-  }
-
-  async onAddVideo() {
-    const res = await Taro.chooseVideo()
-    const uploadResult = await uploadFiles([
-      (res as any).thumbTempFilePath,
-      res.tempFilePath,
-    ])
-    console.log('after video', uploadResult)
-  }
-
-  async onSave() {
-    const { title, feeling, resources } = this.state
-    await request('addVue', {
-      user_id: 1, // TODO: add user
-      title,
-      feeling,
-      resources,
-      tags: [],
-    })
-    Taro.navigateTo({ url: '/pages/index/index' })
+  async onEdit() {
+    path.memoria.update.navigate()
   }
 
   componentDidMount() {
-    // request('getVue', { vue_id: 6 }).then(res => {
-    //   this.setState(res.data)
-    // })
+    request('getVue', { vue_id: this.$router.params.id }).then(res => {
+      this.setState({
+        title: res.title,
+        feeling: res.feeling,
+        resources: res.resources,
+      })
+    })
   }
 
   render() {
@@ -80,21 +40,15 @@ class MemoriaDetail extends Component<Props, State> {
     return (
       <View className="vueUpdate">
         <Text>标题</Text>
-        <Input onInput={this.onTitleChange} value={title} className="title" />
+        <View className="title">{title}</View>
         <Text>想法</Text>
-        <Textarea
-          onInput={this.onFeelingChange}
-          value={feeling}
-          className="feeling"
-        />
+        <View className="feeling">{feeling}</View>
         <View className="photoContainer">
           {resources.map(x => {
             return <Image src={x.url} className="photo" />
           })}
         </View>
-        <Button onClick={this.onAddImage}>Add Photo</Button>
-        <Button onClick={this.onAddVideo}>Add Video</Button>
-        <Button onClick={this.onSave}>Save Vue</Button>
+        <Button onClick={this.onEdit}>Edit</Button>
       </View>
     )
   }

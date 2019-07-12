@@ -58,8 +58,7 @@ export const uploadFile = async (filename: string) => {
     !qiniuConfig.token ||
     currentTime - qiniuConfig.prevGetTime >= qiniuConfig.expires_second
   ) {
-    const res = await request('getQiniuToken', {})
-    const data = res.data
+    const data = await request('getQiniuToken', {})
     if (data.token && data.expires_second) {
       qiniuConfig.token = data.token
       qiniuConfig.expires_second = data.expires_second
@@ -68,7 +67,7 @@ export const uploadFile = async (filename: string) => {
     } else {
       showModal({
         title: '提示信息',
-        content: (res as any).message,
+        content: '上传失败',
       })
       return {
         filename,

@@ -74,9 +74,9 @@ export class ContractGen {
     const resType = dtos.res
     let resTypeStr = resType
     if (!resTypeStr || !keys.includes('res')) {
-      resTypeStr = 'CommonRes'
+      resTypeStr = 'any'
     } else {
-      resTypeStr = `CommonRes<${resTypeStr}>`
+      resTypeStr = `${resTypeStr}`
     }
     dtoStr += `${this.addLine(3)}res: ${resTypeStr}`
 
