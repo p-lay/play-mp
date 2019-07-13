@@ -3,7 +3,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button, Text, Input, Textarea, Image } from '@tarojs/components'
 import { observer, inject } from '@tarojs/mobx'
 import { request } from '../../util/request'
-import { uploadFiles, qiniuUrlBindSearch } from '../../util/qiniu'
+import { uploadFiles } from '../../util/qiniu'
 
 type Props = {}
 
@@ -14,7 +14,7 @@ type State = {} & BaseVue & Partial<VueAppendInfo>
 @observer
 class VueUpdate extends Component<Props, State> {
   config: Config = {
-    navigationBarTitleText: 'update',
+    navigationBarTitleText: 'create & edit',
   }
 
   state: State = {

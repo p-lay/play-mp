@@ -28,6 +28,10 @@ class MemoriaList extends Component<Props, State> {
     })
   }
 
+  onCreateMemoria() {
+    path.memoria.update.navigate()
+  }
+
   componentDidMount() {
     request('getMemoriaList', {}).then(res => {
       this.setState({
@@ -50,6 +54,8 @@ class MemoriaList extends Component<Props, State> {
             </View>
           )
         })}
+
+        <Button size='mini' onClick={this.onCreateMemoria} className='createMemoria'>Create memoria</Button>
       </View>
     )
   }

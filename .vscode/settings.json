@@ -1,6 +1,7 @@
 {
     "prettier.singleQuote": true,
     "prettier.trailingComma": "all",
-    "prettier.semi": false
+    "prettier.semi": false,
+    "cSpell.ignoreWords": ["memoria", "memorias"],
   }
   
