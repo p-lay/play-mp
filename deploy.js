@@ -4,12 +4,16 @@ const inquirer = require('inquirer')
 const request = require('request')
 const util = require('util')
 
-const uploadConfig = {
+const config = {
   getVersionUrl: 'https://version.matthew5.cn/mp-version',
   setVersionUrl: 'https://version.matthew5.cn/mp-version/update',
+  sitEnv: 'SIT',
+  sitBuildCommand: 'npm run build:sit',
+  prodEnv: 'PROD',
+  prodBuildCommand: 'npm run build:prod'
 }
 const uploadParams = {
-  env: 'development',
+  env: config.sitEnv,
   version: null,
   versionDesc: 'here is version desc',
   versionUpdateType: '2',
@@ -39,7 +43,7 @@ function init() {
 
 //从服务器获取版本号
 function getVersionFromOrigin() {
-  request.get(uploadConfig.getVersionUrl, function(error, response, body) {
+  request.get(config.getVersionUrl, function(error, response, body) {
     if (!error && response.statusCode == 200) {
       uploadParams.devLastVersion = JSON.parse(body).version.dev
       uploadParams.prodLastVersion = JSON.parse(body).version.prod
@@ -51,7 +55,7 @@ function getVersionFromOrigin() {
 }
 //版本号处理
 async function versionHandler() {
-  if (uploadParams.env === 'development') {
+  if (uploadParams.env === config.sitEnv) {
     console.log(`\n --- 体验版环境 --- \n`)
     if (!uploadParams.devLastVersion || uploadParams.devLastVersion === '') {
       if (!uploadParams.version) {
@@ -101,7 +105,7 @@ async function versionHandler() {
         }
       }
     }
-  } else if (uploadParams.env === 'production') {
+  } else if (uploadParams.env === 'PROD') {
     console.log(`\n --- 生产环境 --- \n`)
     console.log(`当前生产版本号:${uploadParams.prodLastVersion}`)
     if (
@@ -126,10 +130,10 @@ function getVersionDesc() {
 //打包
 function build() {
   console.log('\n～～～～ start build ～～～～')
-  if (uploadParams.env === 'development') {
-    console.log(execCommand('npm run build:weapp'))
-  } else if (uploadParams.env === 'production') {
-    console.log(execCommand('npm run build:weapp-prod'))
+  if (uploadParams.env === config.sitEnv) {
+    console.log(execCommand(config.sitBuildCommand))
+  } else if (uploadParams.env === config.prodEnv) {
+    console.log(execCommand(config.prodBuildCommand))
   }
   upload()
 }
@@ -172,7 +176,7 @@ function setVersion() {
   request(
     {
       method: 'POST',
-      url: `${uploadConfig.setVersionUrl}`,
+      url: `${config.setVersionUrl}`,
       json: true,
       header: {
         'content-type': 'application/json',
@@ -192,13 +196,13 @@ function setVersion() {
 }
 // 计算版本号
 function versionComputed() {
-  if (uploadParams.env === 'development') {
+  if (uploadParams.env === config.sitEnv) {
     let devNowVersion = updateDevVersion()
     uploadParams.updateVersion = {
       dev: devNowVersion,
     }
     return devNowVersion
-  } else if (uploadParams.env === 'production') {
+  } else if (uploadParams.env === config.prodEnv) {
     uploadParams.updateVersion = {
       prod: uploadParams.version,
     }

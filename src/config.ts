@@ -1,7 +1,8 @@
+export const env_mode = process.env.NODE_ENV
+
+const isLocal = env_mode == 'LOCAL'
+
 export const config = {
   qiniuDomain: 'qiniu.matthew5.cn',
-//   serverHost: 'https://play.matthew5.cn',
-  serverHost: 'http://localhost:3000',
+  serverHost: isLocal ? 'http://localhost:3000' : 'https://play.matthew5.cn',
 }
-
-export const isProd = process.env.NODE_ENV === 'production'
