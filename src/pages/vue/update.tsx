@@ -1,16 +1,16 @@
 import './update.scss'
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Button, Text, Input, Textarea, Image } from '@tarojs/components'
-import { observer, inject } from '@tarojs/mobx'
 import { request } from '../../util/request'
 import { uploadFiles } from '../../util/qiniu'
+import { Component, Config, observer } from '../component'
+import { path } from '../../util/path'
 
 type Props = {}
 
 // add and edit => BaseVue & Partial<VueAppendInfo>
 type State = {} & BaseVue & Partial<VueAppendInfo>
 
-@inject('counterStore')
 @observer
 class VueUpdate extends Component<Props, State> {
   config: Config = {
@@ -66,7 +66,7 @@ class VueUpdate extends Component<Props, State> {
       resources,
       tags: [],
     })
-    Taro.navigateTo({ url: '/pages/index/index' })
+    path.home.navigate()
   }
 
   componentDidMount() {

@@ -1,16 +1,15 @@
 import './update.scss'
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Button, Text, Input, Textarea, Image } from '@tarojs/components'
-import { observer, inject } from '@tarojs/mobx'
 import { request } from '../../util/request'
 import { path } from '../../util/path'
+import { Component, Config, observer } from '../component'
 
 type Props = {}
 
 // add and edit => BaseVue & Partial<VueAppendInfo>
 type State = {} & BaseVue & Partial<VueAppendInfo>
 
-@inject('counterStore')
 @observer
 class MemoriaDetail extends Component<Props, State> {
   config: Config = {

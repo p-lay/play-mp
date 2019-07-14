@@ -5,10 +5,14 @@
   .title {
     border: 1px solid black;
     margin-bottom: 20px;
+    height: 60px;
+    display: flex;
+    align-items: center;
   }
   .feeling {
     border: 1px solid black;
     margin-bottom: 20px;
+    min-height: 400px;
   }
   .photoContainer {
   }

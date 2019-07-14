@@ -1,7 +1,6 @@
 import { ComponentType } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button, Text } from '@tarojs/components'
-import { observer, inject } from '@tarojs/mobx'
 import './index.scss'
 
 type PageStateProps = {
@@ -17,8 +16,6 @@ interface Index {
   props: PageStateProps
 }
 
-@inject('counterStore')
-@observer
 class Index extends Component {
   /**
    * 指定config的类型声明为: Taro.Config
@@ -32,9 +29,6 @@ class Index extends Component {
   }
 
   render() {
-    const {
-      counterStore: { counter },
-    } = this.props
     return <View className="index" />
   }
 }

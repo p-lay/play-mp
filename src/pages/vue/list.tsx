@@ -1,9 +1,9 @@
 import './list.scss'
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Button, Text, Input, Textarea, Image } from '@tarojs/components'
-import { observer, inject } from '@tarojs/mobx'
 import { request } from '../../util/request'
 import { path } from '../../util/path'
+import { Component, Config, observer } from '../component'
 
 type Props = {}
 
@@ -11,7 +11,6 @@ type State = {
   memorias: GetMemoriaListRes['memorias']
 }
 
-@inject('counterStore')
 @observer
 class MemoriaList extends Component<Props, State> {
   config: Config = {
@@ -32,12 +31,24 @@ class MemoriaList extends Component<Props, State> {
     path.memoria.update.navigate()
   }
 
-  componentDidMount() {
+  fetchData() {
     request('getMemoriaList', {}).then(res => {
       this.setState({
         memorias: res.memorias,
       })
     })
+  }
+
+  onPullDownRefresh() {
+    this.fetchData()
+  }
+
+  componentDidShow() {
+    this.fetchData()
+  }
+
+  componentDidMount() {
+    this.fetchData()
   }
 
   render() {
@@ -55,7 +66,13 @@ class MemoriaList extends Component<Props, State> {
           )
         })}
 
-        <Button size='mini' onClick={this.onCreateMemoria} className='createMemoria'>Create memoria</Button>
+        <Button
+          size="mini"
+          onClick={this.onCreateMemoria}
+          className="createMemoria"
+        >
+          Create memoria
+        </Button>
       </View>
     )
   }

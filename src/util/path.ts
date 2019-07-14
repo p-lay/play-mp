@@ -2,7 +2,7 @@ import { redirectTo, navigateTo } from '@tarojs/taro'
 import { stringify } from 'querystring'
 
 const _path = {
-  home: '/pages/index/index',
+  home: '/pages/vue/list',
   memoria: {
     update: '/pages/vue/update',
     detail: '/pages/vue/detail',
