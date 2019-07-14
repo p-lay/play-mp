@@ -43,10 +43,6 @@ class MemoriaList extends Component<Props, State> {
     this.fetchData()
   }
 
-  componentDidShow() {
-    this.fetchData()
-  }
-
   componentDidMount() {
     this.fetchData()
   }

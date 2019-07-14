@@ -20,12 +20,26 @@ class MemoriaDetail extends Component<Props, State> {
     resources: [],
   } as any
 
+  get memoriaId() {
+    return this.$router.params.id
+  }
+
   async onEdit() {
-    path.memoria.update.navigate()
+    path.memoria.update.navigate({
+      id: this.memoriaId,
+      action: 'edit',
+    })
+  }
+
+  async onDelete() {
+    await request('deleteMemoria', {
+      id: this.memoriaId,
+    })
+    path.home.redirect()
   }
 
   componentDidMount() {
-    request('getVue', { vue_id: this.$router.params.id }).then(res => {
+    request('getVue', { vue_id: this.memoriaId }).then(res => {
       this.setState({
         title: res.title,
         feeling: res.feeling,
@@ -48,6 +62,7 @@ class MemoriaDetail extends Component<Props, State> {
           })}
         </View>
         <Button onClick={this.onEdit}>Edit</Button>
+        <Button onClick={this.onDelete}>Delete</Button>
       </View>
     )
   }

@@ -21,6 +21,14 @@ class VueUpdate extends Component<Props, State> {
     resources: [],
   } as any
 
+  get memoriaId() {
+    return this.$router.params.id
+  }
+
+  get action(): 'edit' {
+    return this.$router.params.action
+  }
+
   onTitleChange(event: any) {
     this.setState({
       title: event.detail.value,
@@ -59,20 +67,30 @@ class VueUpdate extends Component<Props, State> {
 
   async onSave() {
     const { title, feeling, resources } = this.state
-    await request('addVue', {
+    const info = {
       user_id: 1, // TODO: add user
       title,
       feeling,
       resources,
       tags: [],
-    })
-    path.home.navigate()
+    }
+    if (this.action == 'edit') {
+      await request('updateVue', {
+        id: this.memoriaId,
+        ...info,
+      } as any)
+    } else {
+      await request('addVue', info)
+    }
+    path.home.redirect()
   }
 
   componentDidMount() {
-    // request('getVue', { vue_id: 6 }).then(res => {
-    //   this.setState(res.data)
-    // })
+    if (this.action == 'edit') {
+      request('getVue', { vue_id: this.memoriaId }).then(res => {
+        this.setState(res)
+      })
+    }
   }
 
   render() {
