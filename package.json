@@ -17,7 +17,8 @@
     "sit": "yarn build:sit --watch",
     "build": "yarn build:local",
     "deploy": "node deploy.js SIT",
-    "gen": "ts-node nest-ts-gen/index.ts"
+    "gen": "ts-node nest-ts-gen/index.ts",
+    "gl": "git submodule update --remote"
   },
   "author": "",
   "license": "MIT",

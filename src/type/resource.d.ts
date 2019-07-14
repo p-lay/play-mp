@@ -16,4 +16,6 @@ interface GetResourceRes {
   resources: ({ id: number } & BaseResource)[]
 }
 
-interface UpdateResourceReq {}
+interface DeleteResourceReq {
+  ids: number[]
+}

@@ -35,5 +35,9 @@ interface VueAppendInfo {
 interface GetVueRes extends BaseVue, VueAppendInfo {}
 
 interface UpdateVueReq extends BaseVue {
-  vue_id: number
+  id: number
+}
+
+interface DeleteMemoriaReq {
+  id: number
 }
