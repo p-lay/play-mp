@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro'
 import { View, Button, Text, Input, Textarea, Image } from '@tarojs/components'
 import { request } from '../../util/request'
 import { path } from '../../util/path'
-import { Component, Config, observer } from '../component'
+import { Component, Config, observer } from '../util/component'
 
 type Props = {}
 

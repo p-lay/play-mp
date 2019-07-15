@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro'
 import { View, Button, Text, Input, Textarea, Image } from '@tarojs/components'
 import { request } from '../../util/request'
 import { path } from '../../util/path'
-import { Component, Config, observer } from '../component'
+import { Component, Config, observer } from '../util/component'
 
 type Props = {}
 
@@ -15,6 +15,7 @@ type State = {
 class MemoriaList extends Component<Props, State> {
   config: Config = {
     navigationBarTitleText: 'memorias',
+    enablePullDownRefresh: true,
   }
 
   state: State = {
@@ -31,16 +32,21 @@ class MemoriaList extends Component<Props, State> {
     path.memoria.update.navigate()
   }
 
-  fetchData() {
-    request('getMemoriaList', {}).then(res => {
+  async fetchData() {
+    await request('getMemoriaList', {}).then(res => {
       this.setState({
         memorias: res.memorias,
       })
     })
   }
 
-  onPullDownRefresh() {
-    this.fetchData()
+  async onPullDownRefresh() {
+    Taro.showLoading({
+      title: '加载中...',
+    })
+    await this.fetchData()
+    Taro.stopPullDownRefresh()
+    Taro.hideLoading()
   }
 
   componentDidMount() {

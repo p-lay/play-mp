@@ -2,11 +2,11 @@ import { redirectTo, navigateTo } from '@tarojs/taro'
 import { stringify } from 'querystring'
 
 const _path = {
-  home: '/pages/vue/list',
+  home: ('/pages/vue/list' as any) as PathGoMethod,
   memoria: {
-    update: '/pages/vue/update',
-    detail: '/pages/vue/detail',
-    list: '/pages/vue/list',
+    update: ('/pages/vue/update' as any) as PathGoMethod,
+    detail: ('/pages/vue/detail' as any) as PathGoMethod,
+    list: ('/pages/vue/list' as any) as PathGoMethod,
   },
 }
 

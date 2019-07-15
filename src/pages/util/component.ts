@@ -1,7 +1,7 @@
 import { inject, observer as mobxObserver } from '@tarojs/mobx'
 import { Component as TaroComponent, Config as TaroConfig } from '@tarojs/taro'
-import { Store } from '../store'
-import { path } from '../util/path'
+import { Store } from '../../store'
+import { path } from '../../util/path'
 
 export const observer = mobxObserver
 export type Config = TaroConfig & {
