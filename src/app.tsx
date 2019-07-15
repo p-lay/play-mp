@@ -1,10 +1,10 @@
+import './app.scss'
 import '@tarojs/async-await'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { Provider } from '@tarojs/mobx'
 import MemoriaList from './pages/vue/list'
 import userStore from './store/user'
-
-import './app.scss'
+import { UserAction } from './action/user'
 
 const store = {
   userStore,
@@ -33,13 +33,9 @@ class App extends Component {
     },
   }
 
-  componentDidMount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
-
-  componentDidCatchError() {}
+  componentWillMount() {
+    UserAction.login()
+  }
 
   render() {
     return (

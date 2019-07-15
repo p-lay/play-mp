@@ -5,4 +5,4 @@ type CommonRes<T = any> = Promise<{
   data: T
 }>
 
-type Code = 1000 | 2000
+type Code = 1000 | 2000 | 500

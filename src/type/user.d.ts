@@ -13,6 +13,7 @@ interface GetUserInfoReq {
 
 interface GetUserInfoRes extends UserInfo {
   userId: number
+  roleId: number
 }
 
 interface UpdateUserInfoReq extends UserInfo {
