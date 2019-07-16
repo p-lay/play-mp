@@ -23,41 +23,34 @@ const action = {
     }
   },
 
-  updateWechatAuthSetting() {
+  async updateWechatAuthSetting() {
     const store = getStore('userStore')
-    return Taro.getSetting().then(settingRes => {
-      return store.setWeChatAuthSetting({
-        userInfo: settingRes.authSetting['scope.userInfo'],
+    const settingRes = await Taro.getSetting()
+    await store.setWeChatAuthSetting({
+      userInfo: settingRes.authSetting['scope.userInfo'],
+    })
+  },
+
+  async updateUserInfo() {
+    const store = getStore('userStore')
+    if (store.authSetting.userInfo) {
+      const res = await Taro.getUserInfo()
+      const userInfo = res.userInfo as UserInfo
+      const { userId } = store.userInfo
+      const updateRes = await request('updateUserInfo', {
+        userId,
+        ...userInfo,
       })
-    })
+      if (updateRes && updateRes.user_info) {
+        store.setUserInfo(updateRes.user_info)
+        store.setIsNew(false)
+      }
+    }
   },
 
-  updateUserInfo() {
-    // const store = getStore("userStore")
-    // if (store.authSetting.userInfo) {
-    //   Taro.getUserInfo().then((userInfoRes) => {
-    //     const { nickName, avatarUrl, gender } = userInfoRes.userInfo
-    //     const { id, self_introduction } = store.userInfo
-    //     UpdateUserInfo({
-    //       id,
-    //       nickname: nickName,
-    //       avatar: avatarUrl,
-    //       self_introduction,
-    //       gender: Number(gender)
-    //     }).then((updateRes) => {
-    //       if (updateRes && updateRes.user_info) {
-    //         store.setUserInfo(updateRes.user_info)
-    //         store.setIsNew(false)
-    //       }
-    //     })
-    //   })
-    // }
-  },
-
-  checkAndUpdateUserInfo() {
-    this.updateWechatAuthSetting().then(res => {
-      this.updateUserInfo()
-    })
+  async checkAndUpdateUserInfo() {
+    await this.updateWechatAuthSetting()
+    await this.updateUserInfo()
   },
 }
 
