@@ -1,5 +1,6 @@
 import { redirectTo, navigateTo } from '@tarojs/taro'
 import { stringify } from 'querystring'
+import { getStore } from '../store'
 
 const _path = {
   home: ('/pages/vue/list' as any) as PathGoMethod,
@@ -19,7 +20,15 @@ type PathGoMethod = {
 function pathGo(url: string, param: any, isGo?: boolean, isRedirect?: boolean) {
   const goTo = isRedirect ? redirectTo : navigateTo
   const path = { url: addUrlParam(url, param) }
-  isGo && goTo(path)
+  if (isGo) {
+    const userStore = getStore('userStore')
+    const authModalStore = getStore('authModalStore')
+    if (userStore.isLogon) {
+      goTo(path)
+    } else {
+      authModalStore.openUserInfo()
+    }
+  }
   return path.url
 }
 

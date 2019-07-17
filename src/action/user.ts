@@ -9,14 +9,14 @@ const action = {
      */
   async login() {
     const store = getStore('userStore')
+    const authModalStore = getStore('authModalStore')
     const res = await Taro.login()
     if (res.code) {
       const userInfoRes = await request('getUserInfo', { code: res.code })
       if (userInfoRes) {
         store.setUserInfo(userInfoRes)
       } else {
-        store.setIsNew(true)
-        store.setUserInfoAuthSetting(false)
+        authModalStore.openUserInfo()
       }
     } else {
       throw new Error('Wechat login failed')
@@ -43,7 +43,6 @@ const action = {
       })
       if (updateRes && updateRes.user_info) {
         store.setUserInfo(updateRes.user_info)
-        store.setIsNew(false)
       }
     }
   },

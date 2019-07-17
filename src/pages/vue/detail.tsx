@@ -4,6 +4,7 @@ import { View, Button, Text, Input, Textarea, Image } from '@tarojs/components'
 import { request } from '../../util/request'
 import { path } from '../../util/path'
 import { Component, Config, observer } from '../util/component'
+import { AuthModal } from '../../components/authModal'
 
 type Props = {}
 
@@ -52,6 +53,7 @@ class MemoriaDetail extends Component<Props, State> {
     const { title, feeling, resources } = this.state
     return (
       <View className="vueUpdate">
+        <AuthModal />
         <Text>标题</Text>
         <View className="title">{title}</View>
         <Text>想法</Text>

@@ -1,14 +1,11 @@
 import './app.scss'
+import './taro-ui.scss'
 import '@tarojs/async-await'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { Provider } from '@tarojs/mobx'
 import MemoriaList from './pages/vue/list'
-import userStore from './store/user'
+import store from './store'
 import { UserAction } from './action/user'
-
-const store = {
-  userStore,
-}
 
 class App extends Component {
   /**

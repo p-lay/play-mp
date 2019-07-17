@@ -16,34 +16,23 @@ const store = {
     roleId: 0,
   } as GetUserInfoRes,
 
-  isNew: false,
-
   authSetting: {
-    userInfo: true,
+    userInfo: false,
   },
 
   setUserInfo(userInfo: any) {
     this.userInfo = userInfo
-    console.log(`user info init ${JSON.stringify(userInfo)}`)
   },
 
   setWeChatAuthSetting(authSetting: AuthSetting) {
     this.authSetting = authSetting
   },
 
-  setUserInfoAuthSetting(userInfo: boolean) {
-    this.authSetting.userInfo = userInfo
-  },
-
-  setIsNew(isNew: boolean) {
-    this.isNew = isNew
-  },
-
-  get isUserInfoAuthed() {
-    return this.authSetting.userInfo
+  get isLogon() {
+    return this.userInfo && this.userInfo.userId
   },
 }
 
 export type UserStore = typeof store
 
-export default observable(store)
+export const userStore = observable(store)

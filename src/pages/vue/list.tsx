@@ -4,6 +4,7 @@ import { View, Button, Text, Input, Textarea, Image } from '@tarojs/components'
 import { request } from '../../util/request'
 import { path } from '../../util/path'
 import { Component, Config, observer } from '../util/component'
+import { AuthModal } from '../../components/authModal/index'
 
 type Props = {}
 
@@ -57,6 +58,7 @@ class MemoriaList extends Component<Props, State> {
     const { memorias } = this.state
     return (
       <View className="memorias">
+        <AuthModal allowClose />
         {memorias.map(x => {
           return (
             <View
