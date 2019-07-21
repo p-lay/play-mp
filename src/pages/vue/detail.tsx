@@ -8,8 +8,7 @@ import { AuthModal } from '../../components/authModal'
 
 type Props = {}
 
-// add and edit => BaseVue & Partial<VueAppendInfo>
-type State = {} & BaseVue & Partial<VueAppendInfo>
+type State = {} & BaseMemoria & Partial<MemoriaAppendInfo>
 
 @observer
 class MemoriaDetail extends Component<Props, State> {
@@ -40,7 +39,7 @@ class MemoriaDetail extends Component<Props, State> {
   }
 
   componentDidMount() {
-    request('getVue', { vue_id: this.memoriaId }).then(res => {
+    request('getMemoria', { id: this.memoriaId }).then(res => {
       this.setState({
         title: res.title,
         feeling: res.feeling,

@@ -8,8 +8,7 @@ import { path } from '../../util/path'
 
 type Props = {}
 
-// add and edit => BaseVue & Partial<VueAppendInfo>
-type State = {} & BaseVue & Partial<VueAppendInfo>
+type State = {} & BaseMemoria & Partial<MemoriaAppendInfo>
 
 @observer
 class VueUpdate extends Component<Props, State> {
@@ -75,19 +74,19 @@ class VueUpdate extends Component<Props, State> {
       tags: [],
     }
     if (this.action == 'edit') {
-      await request('updateVue', {
+      await request('updateMemoria', {
         id: this.memoriaId,
         ...info,
       } as any)
     } else {
-      await request('addVue', info)
+      await request('addMemoria', info)
     }
     path.home.redirect()
   }
 
   componentDidMount() {
     if (this.action == 'edit') {
-      request('getVue', { vue_id: this.memoriaId }).then(res => {
+      request('getMemoria', { id: this.memoriaId }).then(res => {
         this.setState(res)
       })
     }
