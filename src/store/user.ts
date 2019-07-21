@@ -14,6 +14,7 @@ const store = {
     country: '',
     userId: 0,
     roleId: 0,
+    isNew: true,
   } as GetUserInfoRes,
 
   authSetting: {
@@ -29,7 +30,7 @@ const store = {
   },
 
   get isLogon() {
-    return this.userInfo && this.userInfo.userId
+    return this.userInfo && !this.userInfo.isNew
   },
 }
 

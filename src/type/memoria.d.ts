@@ -16,6 +16,10 @@ interface GetMemoriaReq {
   id: number
 }
 
+interface GetMemoriaListReq {
+  tag_ids?: number[]
+  create_by?: number
+}
 interface GetMemoriaListRes {
   memorias: {
     title: string

@@ -15,6 +15,7 @@ interface GetUserInfoReq {
 interface GetUserInfoRes extends UserInfo {
   userId: number
   roleId: number
+  isNew?: boolean
 }
 
 interface UpdateUserInfoReq extends UserInfo {

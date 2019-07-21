@@ -21,6 +21,7 @@ class App extends Component {
       'pages/index/index',
       'pages/vue/update',
       'pages/vue/detail',
+      'pages/individual/index'
     ],
     window: {
       backgroundTextStyle: 'light',

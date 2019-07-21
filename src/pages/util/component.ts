@@ -32,6 +32,10 @@ export class Component<Props = {}, State = {}> extends TaroComponent<
     return this.userStore
   }
 
+  get userId() {
+    return this.userStore.userInfo.userId
+  }
+
   onShareAppMessage() {
     const config = this.config as Config
     return {

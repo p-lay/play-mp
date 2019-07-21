@@ -1,11 +1,10 @@
-import './list.scss'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { request } from '../../util/request'
 import { path } from '../../util/path'
 import { Component, Config, observer } from '../util/component'
-import { AuthModal } from '../../components/authModal/index'
-import { AtButton, AtCard } from 'taro-ui'
+import { AtCard } from 'taro-ui'
+import '../vue/list.scss'
 
 type Props = {}
 
@@ -14,7 +13,7 @@ type State = {
 }
 
 @observer
-class MemoriaList extends Component<Props, State> {
+class Individual extends Component<Props, State> {
   config: Config = {
     navigationBarTitleText: 'memorias',
     enablePullDownRefresh: true,
@@ -39,7 +38,9 @@ class MemoriaList extends Component<Props, State> {
   }
 
   async fetchData() {
-    await request('getMemoriaList', {}).then(res => {
+    await request('getMemoriaList', {
+      create_by: this.userId,
+    }).then(res => {
       this.setState({
         memorias: res.memorias,
       })
@@ -63,7 +64,7 @@ class MemoriaList extends Component<Props, State> {
     const { memorias } = this.state
     return (
       <View className="memorias">
-        <AuthModal allowClose />
+        <View>个人中心</View>
         {memorias.map(x => {
           return (
             <AtCard
@@ -76,26 +77,9 @@ class MemoriaList extends Component<Props, State> {
             </AtCard>
           )
         })}
-
-        <AtButton
-          type="primary"
-          size="small"
-          onClick={this.onCreateMemoria}
-          className="memoriaActionBtn"
-        >
-          创建 Memoria
-        </AtButton>
-        <AtButton
-          type="primary"
-          size="small"
-          onClick={this.onGoIndividual}
-          className="memoriaActionBtn"
-        >
-          个人页
-        </AtButton>
       </View>
     )
   }
 }
 
-export default MemoriaList
+export default Individual

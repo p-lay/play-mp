@@ -13,9 +13,8 @@ const action = {
     const res = await Taro.login()
     if (res.code) {
       const userInfoRes = await request('getUserInfo', { code: res.code })
-      if (userInfoRes) {
-        store.setUserInfo(userInfoRes)
-      } else {
+      store.setUserInfo(userInfoRes)
+      if (userInfoRes.isNew) {
         authModalStore.openUserInfo()
       }
     } else {
@@ -37,13 +36,13 @@ const action = {
       const res = await Taro.getUserInfo()
       const userInfo = res.userInfo as UserInfo
       const { userId } = store.userInfo
-      const updateRes = await request('updateUserInfo', {
+      await request('updateUserInfo', {
         userId,
         ...userInfo,
       })
-      if (updateRes && updateRes.user_info) {
-        store.setUserInfo(updateRes.user_info)
-      }
+      const authModalStore = getStore('authModalStore')
+      store.setUserInfo(userInfo)
+      authModalStore.closeUserInfo()
     }
   },
 

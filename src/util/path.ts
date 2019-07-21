@@ -9,6 +9,7 @@ const _path = {
     detail: ('/pages/vue/detail' as any) as PathGoMethod,
     list: ('/pages/vue/list' as any) as PathGoMethod,
   },
+  individual: ('/pages/individual/index' as any) as PathGoMethod,
 }
 
 type PathGoMethod = {
