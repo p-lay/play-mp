@@ -1,5 +1,5 @@
 
-interface BaseVue {
+interface BaseMemoria {
   title: string
   feeling?: string
   resources: BaseResource[]
@@ -8,12 +8,12 @@ interface BaseVue {
 }
 
 // user info should be set in request
-interface AddVueReq extends BaseVue {
+interface AddMemoriaReq extends BaseMemoria {
   user_id: number
 }
 
-interface GetVueReq {
-  vue_id: number
+interface GetMemoriaReq {
+  id: number
 }
 
 interface GetMemoriaListRes {
@@ -23,8 +23,8 @@ interface GetMemoriaListRes {
   }[]
 }
 
-interface VueAppendInfo {
-  vue_id: number
+interface MemoriaAppendInfo {
+  id: number
   comments: string[]
   // TODO: should be type User not number
   create_by: number
@@ -32,9 +32,9 @@ interface VueAppendInfo {
   update_time: number
 }
 
-interface GetVueRes extends BaseVue, VueAppendInfo {}
+interface GetMemoriaRes extends BaseMemoria, MemoriaAppendInfo {}
 
-interface UpdateVueReq extends BaseVue {
+interface UpdateMemoriaReq extends BaseMemoria {
   id: number
 }
 

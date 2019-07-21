@@ -480,6 +480,11 @@
   version "12.0.10"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.0.10.tgz#51babf9c7deadd5343620055fc8aff7995c8b031"
 
+"@types/node@^12.0.12":
+  version "12.6.8"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.6.8.tgz#e469b4bf9d1c9832aee4907ba8a051494357c12c"
+  integrity sha512-aX+gFgA5GHcDi89KG5keey2zf0WfZk/HAQotEamsK2kbey+8yGKcson0hbK8E+v0NArlCJQCqMP161YhV6ZXLg==
+
 "@types/node@^8.0.7":
   version "8.10.49"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.49.tgz#f331afc5efed0796798e5591d6e0ece636969b7b"
@@ -5743,6 +5748,13 @@ nervjs@1.4.3, nervjs@^1.4.0:
   dependencies:
     nerv-shared "1.4.0"
     nerv-utils "1.4.3"
+
+nest-ts-code-gen@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/nest-ts-code-gen/-/nest-ts-code-gen-1.0.2.tgz#d7d34a11b18e77d76213b6e48facf48c933e93c9"
+  integrity sha512-QXDEfDpiP81tSUrio3aZsnTpMRrgxPRPlXeXxKeD8X78o/MQbnqj2aATpWYw6NTdGrFgZVETfQgW92CDPX21Hg==
+  dependencies:
+    "@types/node" "^12.0.12"
 
 netmask@^1.0.6:
   version "1.0.6"

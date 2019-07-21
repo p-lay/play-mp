@@ -17,7 +17,7 @@
     "sit": "yarn build:sit --watch",
     "build": "yarn build:local",
     "deploy": "node deploy.js SIT",
-    "gen": "git submodule update --remote && ts-node nest-ts-gen/index.ts"
+    "gen": "git submodule update --remote && ts-node type.gen.ts"
   },
   "author": "",
   "license": "MIT",
@@ -38,6 +38,7 @@
     "mobx": "4.8.0",
     "nerv-devtools": "^1.4.0",
     "nervjs": "^1.4.0",
+    "nest-ts-code-gen": "^1.0.2",
     "prettier": "^1.18.2",
     "taro-ui": "^2.2.1"
   },
