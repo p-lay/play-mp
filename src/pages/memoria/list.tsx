@@ -1,6 +1,6 @@
 import './list.scss'
 import Taro from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Image } from '@tarojs/components'
 import { request } from '../../util/request'
 import { path } from '../../util/path'
 import { Component, Config, observer } from '../util/component'
@@ -67,12 +67,11 @@ class MemoriaList extends Component<Props, State> {
         {memorias.map(x => {
           return (
             <AtCard
-              note="小Tips"
               title={x.title}
               onClick={this.onMemoriaClick.bind(this, x.id)}
               className="memoriaCard"
             >
-              这也是内容区 可以随意定义功能
+              <Image src={x.thumb} className="image" mode='aspectFill'/>
             </AtCard>
           )
         })}

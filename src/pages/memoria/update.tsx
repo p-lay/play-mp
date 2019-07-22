@@ -99,17 +99,13 @@ class MemoriaUpdate extends Component<Props, State> {
 
   onExistVideoRemove(index: number) {
     this.setState(prevState => ({
-      existVideoFiles: prevState.existVideoFiles.filter(
-        (x, i) => i != index,
-      ),
+      existVideoFiles: prevState.existVideoFiles.filter((x, i) => i != index),
     }))
   }
 
   onVideoRemove(index: number) {
     this.setState(prevState => ({
-      newVideoFiles: prevState.newVideoFiles.filter(
-        (x, i) => i != index,
-      ),
+      newVideoFiles: prevState.newVideoFiles.filter((x, i) => i != index),
     }))
   }
 
@@ -140,13 +136,23 @@ class MemoriaUpdate extends Component<Props, State> {
       }
       return result
     })
+    let thumb = ''
     if (this.isEditPage) {
       const existResourceUrls = existImageFiles
         .concat(existVideoFiles)
         .map(x => x.url)
-      const existResourceIds = existResources
-        .filter(x => existResourceUrls.includes(x.url))
-        .map(x => x.id)
+      const resultExistResources = existResources.filter(x =>
+        existResourceUrls.includes(x.url),
+      )
+      const firstExistImage = resultExistResources.find(x => x.type == 'image')
+      if (firstExistImage) {
+        thumb = firstExistImage.url
+      } else if (resources.length) {
+        const image = (resources.find(x => x.type == 'image') ||
+          {}) as BaseResource
+        thumb = image.url
+      }
+
       await request('updateMemoria', {
         id: this.memoriaId,
         title,
@@ -154,9 +160,15 @@ class MemoriaUpdate extends Component<Props, State> {
         resources,
         tags: [],
         create_time: getUnix(selectDate),
-        existResourceIds,
+        existResourceIds: resultExistResources.map(x => x.id),
+        thumb,
       })
     } else {
+      if (resources.length) {
+        const image = (resources.find(x => x.type == 'image') ||
+          {}) as BaseResource
+        thumb = image.url
+      }
       await request('addMemoria', {
         user_id: this.userId,
         title,
@@ -164,6 +176,7 @@ class MemoriaUpdate extends Component<Props, State> {
         resources,
         tags: [],
         create_time: getUnix(selectDate),
+        thumb,
       })
     }
     path.home.redirect()

@@ -77,7 +77,7 @@ class MemoriaDetail extends Component<Props, State> {
             return (
               <View>
                 {isVideo && <Video src={x.url} />}
-                {!isVideo && <Image src={x.url} className="photo" />}
+                {!isVideo && <Image src={x.url} className="photo" mode='aspectFill'/>}
               </View>
             )
           })}
