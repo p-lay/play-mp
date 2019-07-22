@@ -6,12 +6,13 @@ import { path } from '../../util/path'
 import { Component, Config, observer } from '../util/component'
 import { AuthModal } from '../../components/authModal'
 import { getDisplayTime } from '../../util/dayjs'
-import { AtButton } from 'taro-ui'
+import { AtFab } from 'taro-ui'
 
 type Props = {}
 
 type State = {
   createTime: string
+  isActionVisible: boolean
 } & BaseMemoria &
   Partial<MemoriaAppendInfo>
 
@@ -23,6 +24,7 @@ class MemoriaDetail extends Component<Props, State> {
 
   state: State = {
     resources: [],
+    isActionVisible: false,
   } as any
 
   get memoriaId() {
@@ -43,6 +45,12 @@ class MemoriaDetail extends Component<Props, State> {
     path.home.redirect()
   }
 
+  onFabClick = () => {
+    this.setState(prev => ({
+      isActionVisible: !prev.isActionVisible,
+    }))
+  }
+
   componentDidMount() {
     request('getMemoria', { id: this.memoriaId }).then(res => {
       this.memoriaStore.setRes(res)
@@ -51,13 +59,20 @@ class MemoriaDetail extends Component<Props, State> {
         feeling: res.feeling,
         resources: res.resources,
         createTime: getDisplayTime(res.create_time),
-        create_by: res.create_by
+        create_by: res.create_by,
       })
     })
   }
 
   render() {
-    const { title, feeling, resources, createTime, create_by } = this.state
+    const {
+      title,
+      feeling,
+      resources,
+      createTime,
+      create_by,
+      isActionVisible,
+    } = this.state
     return (
       <View className="memoriaUpdate">
         <AuthModal />
@@ -80,14 +95,25 @@ class MemoriaDetail extends Component<Props, State> {
           })}
         </View>
         {create_by == this.userId && (
-          <AtButton onClick={this.onEdit} type="primary" size='small'>
-            Edit
-          </AtButton>
+          <View className="fabBtn">
+            <AtFab onClick={this.onFabClick} size="small">
+              <Text className="at-fab__icon at-icon at-icon-menu"></Text>
+            </AtFab>
+          </View>
         )}
-        {create_by == this.userId && (
-          <AtButton onClick={this.onDelete} type="primary" size='small'>
-            Delete
-          </AtButton>
+        {isActionVisible && (
+          <View className="fabBtn memoriaBtn">
+            <AtFab onClick={this.onEdit} size="small">
+              <Text className="at-fab__icon at-icon at-icon-edit"></Text>
+            </AtFab>
+          </View>
+        )}
+        {isActionVisible && (
+          <View className="fabBtn individualBtn">
+            <AtFab onClick={this.onDelete} size="small">
+              <Text className="at-fab__icon at-icon at-icon-trash"></Text>
+            </AtFab>
+          </View>
         )}
       </View>
     )

@@ -6,7 +6,17 @@
       height: 145px;
     }
   }
-  .memoriaActionBtn {
-    margin-left: 25px;
+  .fabBtn {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    &.memoriaBtn {
+      right: 20px;
+      bottom: 100px;
+    }
+    &.individualBtn {
+      right: 100px;
+      bottom: 30px;
+    }
   }
 }

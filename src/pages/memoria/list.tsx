@@ -1,16 +1,17 @@
 import './list.scss'
 import Taro from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
+import { View, Image, Text } from '@tarojs/components'
 import { request } from '../../util/request'
 import { path } from '../../util/path'
 import { Component, Config, observer } from '../util/component'
 import { AuthModal } from '../../components/authModal/index'
-import { AtButton, AtCard } from 'taro-ui'
+import { AtCard, AtFab } from 'taro-ui'
 
 type Props = {}
 
 type State = {
   memorias: GetMemoriaListRes['memorias']
+  isActionVisible: boolean
 }
 
 @observer
@@ -22,6 +23,7 @@ class MemoriaList extends Component<Props, State> {
 
   state: State = {
     memorias: [],
+    isActionVisible: false,
   }
 
   onMemoriaClick(id: number) {
@@ -30,12 +32,24 @@ class MemoriaList extends Component<Props, State> {
     })
   }
 
-  onCreateMemoria() {
+  onGoCreateMemoria = () => {
+    this.setState({
+      isActionVisible: false,
+    })
     path.memoria.update.navigate()
   }
 
-  onGoIndividual() {
+  onGoIndividual = () => {
+    this.setState({
+      isActionVisible: false,
+    })
     path.individual.navigate()
+  }
+
+  onFabClick = () => {
+    this.setState(prev => ({
+      isActionVisible: !prev.isActionVisible,
+    }))
   }
 
   async fetchData() {
@@ -60,7 +74,7 @@ class MemoriaList extends Component<Props, State> {
   }
 
   render() {
-    const { memorias } = this.state
+    const { memorias, isActionVisible } = this.state
     return (
       <View className="memorias">
         <AuthModal allowClose />
@@ -71,27 +85,29 @@ class MemoriaList extends Component<Props, State> {
               onClick={this.onMemoriaClick.bind(this, x.id)}
               className="memoriaCard"
             >
-              <Image src={x.thumb} className="image" mode='aspectFill'/>
+              <Image src={x.thumb} className="image" mode="aspectFill" />
             </AtCard>
           )
         })}
-
-        <AtButton
-          type="primary"
-          size="small"
-          onClick={this.onCreateMemoria}
-          className="memoriaActionBtn"
-        >
-          创建 Memoria
-        </AtButton>
-        <AtButton
-          type="primary"
-          size="small"
-          onClick={this.onGoIndividual}
-          className="memoriaActionBtn"
-        >
-          个人页
-        </AtButton>
+        <View className="fabBtn">
+          <AtFab onClick={this.onFabClick} size="small">
+            <Text className="at-fab__icon at-icon at-icon-menu"></Text>
+          </AtFab>
+        </View>
+        {isActionVisible && (
+          <View className="fabBtn memoriaBtn">
+            <AtFab onClick={this.onGoCreateMemoria} size="small">
+              <Text className="at-fab__icon at-icon at-icon-add-circle"></Text>
+            </AtFab>
+          </View>
+        )}
+        {isActionVisible && (
+          <View className="fabBtn individualBtn">
+            <AtFab onClick={this.onGoIndividual} size="small">
+              <Text className="at-fab__icon at-icon at-icon-user"></Text>
+            </AtFab>
+          </View>
+        )}
       </View>
     )
   }
