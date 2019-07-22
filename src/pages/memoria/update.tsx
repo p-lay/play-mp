@@ -52,10 +52,10 @@ class MemoriaUpdate extends Component<Props, State> {
 
   async onAddVideo() {
     const res = await Taro.chooseVideo()
-    const uploadResult = await uploadFiles([
-      res.tempFilePath,
-      (res as any).thumbTempFilePath,
-    ])
+    const urls = [res.tempFilePath, (res as any).thumbTempFilePath].filter(
+      x => x,
+    )
+    const uploadResult = await uploadFiles(urls)
     const videoResource: BaseResource = {
       url: uploadResult[0].uploadedUrl,
       thumb: '',
