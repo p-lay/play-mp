@@ -40,6 +40,7 @@ interface GetMemoriaRes extends BaseMemoria, MemoriaAppendInfo {}
 
 interface UpdateMemoriaReq extends BaseMemoria {
   id: number
+  existResourceIds?: number[]
 }
 
 interface DeleteMemoriaReq {

@@ -1,18 +1,27 @@
 import './update.scss'
 import Taro from '@tarojs/taro'
-import { View, Button, Text, Input, Textarea, Image } from '@tarojs/components'
+import { View, Text, Input, Textarea, Video } from '@tarojs/components'
 import { request } from '../../util/request'
 import { uploadFiles } from '../../util/qiniu'
 import { Component, Config, observer } from '../util/component'
 import { path } from '../../util/path'
-import { AtCalendar } from 'taro-ui'
+import { AtCalendar, AtImagePicker, AtButton } from 'taro-ui'
 import { getDisplayTime, getUnix } from '../util/dayjs'
+
+type ResourceFiles = {
+  url: string
+}[]
 
 type Props = {}
 
 type State = {
   selectDate: string
   isCalendarVisible: boolean
+  existResources: BaseResource[]
+  newImageFiles: ResourceFiles
+  existImageFiles: ResourceFiles
+  newVideoFiles: ResourceFiles
+  existVideoFiles: ResourceFiles
 } & BaseMemoria &
   Partial<MemoriaAppendInfo>
 
@@ -23,16 +32,19 @@ class MemoriaUpdate extends Component<Props, State> {
   }
 
   state: State = {
-    resources: [],
     selectDate: getDisplayTime(),
+    newImageFiles: [],
+    existImageFiles: [],
+    newVideoFiles: [],
+    existVideoFiles: [],
   } as any
 
   get memoriaId() {
     return this.$router.params.id
   }
 
-  get action(): 'edit' {
-    return this.$router.params.action
+  get isEditPage() {
+    return this.$router.params.action == 'edit'
   }
 
   onTitleChange(event: any) {
@@ -47,32 +59,10 @@ class MemoriaUpdate extends Component<Props, State> {
     })
   }
 
-  async onAddImage() {
-    const res = await Taro.chooseImage()
-    const uploadResult = await uploadFiles(res.tempFilePaths)
-    this.setState(prevState => ({
-      resources: prevState.resources.concat(
-        uploadResult.map(x => ({ url: x.uploadedUrl })),
-      ),
-    }))
-  }
-
-  async onAddVideo() {
+  onAddVideo = async () => {
     const res = await Taro.chooseVideo()
-    const urls = [res.tempFilePath, (res as any).thumbTempFilePath].filter(
-      x => x,
-    )
-    const uploadResult = await uploadFiles(urls)
-    const videoResource: BaseResource = {
-      url: uploadResult[0].uploadedUrl,
-      thumb: '',
-      type: 'video',
-    }
-    if (uploadResult.length == 2) {
-      videoResource.thumb = uploadResult[1].uploadedUrl
-    }
     this.setState(prevState => ({
-      resources: prevState.resources.concat(videoResource),
+      newVideoFiles: prevState.newVideoFiles.concat({ url: res.tempFilePath }),
     }))
   }
 
@@ -89,9 +79,74 @@ class MemoriaUpdate extends Component<Props, State> {
     })
   }
 
-  async onSave() {
-    const { title, feeling, resources, selectDate } = this.state
-    if (this.action == 'edit') {
+  onRemoveExistImage = (
+    existImageFiles: any[],
+    operationType: string,
+    index: number,
+  ) => {
+    this.setState({ existImageFiles })
+  }
+
+  onImagePickerChange = (
+    newImageFiles: any[],
+    operationType: string,
+    index: number,
+  ) => {
+    this.setState({
+      newImageFiles,
+    })
+  }
+
+  onExistVideoRemove(index: number) {
+    this.setState(prevState => ({
+      existVideoFiles: prevState.existVideoFiles.filter(
+        (x, index) => index != index,
+      ),
+    }))
+  }
+
+  onVideoRemove(index: number) {
+    this.setState(prevState => ({
+      newVideoFiles: prevState.newVideoFiles.filter(
+        (x, index) => index != index,
+      ),
+    }))
+  }
+
+  onSave = async () => {
+    const {
+      title,
+      feeling,
+      selectDate,
+      existResources,
+      newImageFiles,
+      existImageFiles,
+      newVideoFiles,
+      existVideoFiles,
+    } = this.state
+    const resource = newImageFiles.concat(newVideoFiles)
+    const uploadResult = await uploadFiles(resource.map(x => x.url))
+    if (uploadResult.filter(x => !!x.uploadedUrl).length != resource.length) {
+      return
+    }
+
+    const resources = uploadResult.map((x, index) => {
+      const result: BaseResource = {
+        url: x.uploadedUrl,
+        type: 'image',
+      }
+      if (index >= newImageFiles.length) {
+        result.type = 'video'
+      }
+      return result
+    })
+    if (this.isEditPage) {
+      const existResourceUrls = existImageFiles
+        .concat(existVideoFiles)
+        .map(x => x.url)
+      const existResourceIds = existResources
+        .filter(x => existResourceUrls.includes(x.url))
+        .map(x => x.id)
       await request('updateMemoria', {
         id: this.memoriaId,
         title,
@@ -99,6 +154,7 @@ class MemoriaUpdate extends Component<Props, State> {
         resources,
         tags: [],
         create_time: getUnix(selectDate),
+        existResourceIds,
       })
     } else {
       await request('addMemoria', {
@@ -114,10 +170,17 @@ class MemoriaUpdate extends Component<Props, State> {
   }
 
   componentDidMount() {
-    if (this.action == 'edit') {
+    if (this.isEditPage) {
       request('getMemoria', { id: this.memoriaId }).then(res => {
         const state = res as State
         state.selectDate = getDisplayTime(res.create_time)
+        state.existResources = res.resources
+        state.existImageFiles = res.resources
+          .filter(x => x.type != 'video')
+          .map(x => ({ url: x.url }))
+        state.existVideoFiles = res.resources
+          .filter(x => x.type == 'video')
+          .map(x => ({ url: x.url }))
         this.setState(state)
       })
     }
@@ -127,7 +190,10 @@ class MemoriaUpdate extends Component<Props, State> {
     const {
       title,
       feeling,
-      resources,
+      newImageFiles,
+      existImageFiles,
+      newVideoFiles,
+      existVideoFiles,
       selectDate,
       isCalendarVisible,
     } = this.state
@@ -152,14 +218,58 @@ class MemoriaUpdate extends Component<Props, State> {
           />
         )}
         <View className="photoContainer">
-          {resources.map(x => {
-            const url = x.thumb || x.url
-            return <Image src={url} className="photo" />
-          })}
+          {this.isEditPage && (
+            <AtImagePicker
+              files={existImageFiles}
+              onChange={this.onRemoveExistImage}
+              showAddBtn={false}
+            />
+          )}
+          <AtImagePicker
+            multiple
+            files={newImageFiles}
+            onChange={this.onImagePickerChange}
+          />
+          {this.isEditPage && (
+            <View className="videoContainer">
+              {existVideoFiles.map((x, index) => {
+                return (
+                  <View className="video">
+                    <View
+                      className="at-icon at-icon-subtract-circle icon"
+                      onClick={this.onExistVideoRemove.bind(this, index)}
+                    ></View>
+                    <Video src={x.url} className="resource" />
+                  </View>
+                )
+              })}
+            </View>
+          )}
+          <View className="videoContainer">
+            {newVideoFiles.map((x, index) => {
+              return (
+                <View className="video">
+                  <View
+                    className="at-icon at-icon-subtract-circle icon"
+                    onClick={this.onVideoRemove.bind(this, index)}
+                  ></View>
+                  <Video src={x.url} className="resource" />
+                </View>
+              )
+            })}
+          </View>
         </View>
-        <Button onClick={this.onAddImage}>Add Photo</Button>
-        <Button onClick={this.onAddVideo}>Add Video</Button>
-        <Button onClick={this.onSave}>Save</Button>
+        <AtButton onClick={this.onAddVideo} type="primary" size="small">
+          Video
+        </AtButton>
+        <AtButton
+          onClick={this.onSave}
+          type="primary"
+          size="small"
+          className="saveBtn"
+        >
+          Save
+        </AtButton>
       </View>
     )
   }

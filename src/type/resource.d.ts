@@ -1,4 +1,5 @@
 interface BaseResource {
+  id?: number
   url: string
   thumb?: string
   type?: 'image' | 'video'
@@ -14,7 +15,7 @@ interface GetResourceReq {
 }
 
 interface GetResourceRes {
-  resources: ({ id: number } & BaseResource)[]
+  resources: BaseResource[]
 }
 
 interface DeleteResourceReq {
