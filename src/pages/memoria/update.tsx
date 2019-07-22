@@ -208,20 +208,21 @@ class MemoriaUpdate extends Component<Props, State> {
       selectDate,
       isCalendarVisible,
     } = this.state
+
     return (
       <View className="memoriaUpdate">
         <Text>标题</Text>
-        <Input onInput={this.onTitleChange} value={title} className="title" />
+        <Input onInput={this.onTitleChange} value={title} className="title update" />
         <Text>想法</Text>
         <Textarea
           onInput={this.onFeelingChange}
           value={feeling}
-          className="feeling"
+          className="feeling update"
         />
-        <View
-          className="dateDisplay"
-          onClick={this.onShowCalendar}
-        >{`时间: ${selectDate}`}</View>
+        <View className="dateDisplay" onClick={this.onShowCalendar}>
+          <View className="at-icon at-icon-calendar"></View>
+          {selectDate}
+        </View>
         {isCalendarVisible && (
           <AtCalendar
             onSelectDate={this.onSelectDate}

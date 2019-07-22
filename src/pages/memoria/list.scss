@@ -1,9 +1,20 @@
 .memorias {
   .memoriaCard {
     margin-bottom: 20px;
-    .image {
-      width: 145px;
+
+    .cardContent {
       height: 145px;
+      display: flex;
+      .image {
+        width: 145px;
+        height: 100%;
+      }
+      .feeling {
+        display: inline-block;
+        flex: 1;
+        padding: 20px;
+        overflow: hidden;
+      }
     }
   }
   .fabBtn {

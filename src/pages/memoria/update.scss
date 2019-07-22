@@ -3,16 +3,27 @@
   width: 640px;
 
   .title {
-    border: 1px solid black;
-    margin-bottom: 20px;
     height: 60px;
-    display: flex;
-    align-items: center;
+    margin-bottom: 20px;
+    &.update {
+      border: 1px solid black;
+      display: flex;
+      align-items: center;
+    }
   }
   .feeling {
-    border: 1px solid black;
     margin-bottom: 20px;
-    min-height: 400px;
+    &.update {
+      min-height: 400px;
+      border: 1px solid black;
+    }
+  }
+  .dateDisplay {
+    display: flex;
+    align-items: center;
+    .at-icon-calendar {
+      margin-right: 10px;
+    }
   }
   .photoContainer {
     .videoContainer {

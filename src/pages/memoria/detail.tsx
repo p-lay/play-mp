@@ -32,6 +32,9 @@ class MemoriaDetail extends Component<Props, State> {
   }
 
   onEdit = () => {
+    this.setState({
+      isActionVisible: false,
+    })
     path.memoria.update.navigate({
       id: this.memoriaId,
       action: 'edit',
@@ -76,9 +79,9 @@ class MemoriaDetail extends Component<Props, State> {
     return (
       <View className="memoriaUpdate">
         <AuthModal />
-        <Text>标题</Text>
+        <Text>标题:</Text>
         <View className="title">{title}</View>
-        <Text>想法</Text>
+        <Text>想法:</Text>
         <View className="feeling">{feeling}</View>
         <View>{`时间: ${createTime}`}</View>
         <View className="photoContainer">

@@ -85,7 +85,10 @@ class MemoriaList extends Component<Props, State> {
               onClick={this.onMemoriaClick.bind(this, x.id)}
               className="memoriaCard"
             >
-              <Image src={x.thumb} className="image" mode="aspectFill" />
+              <View className="cardContent">
+                <Image src={x.thumb} className="image" mode="aspectFill" />
+                <View className="feeling">{x.feeling}</View>
+              </View>
             </AtCard>
           )
         })}

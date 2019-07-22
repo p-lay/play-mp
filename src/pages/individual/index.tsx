@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Image } from '@tarojs/components'
 import { request } from '../../util/request'
 import { path } from '../../util/path'
 import { Component, Config, observer } from '../util/component'
@@ -29,14 +29,6 @@ class Individual extends Component<Props, State> {
     })
   }
 
-  onCreateMemoria() {
-    path.memoria.update.navigate()
-  }
-
-  onGoIndividual() {
-    path.individual.navigate()
-  }
-
   async fetchData() {
     await request('getMemoriaList', {
       create_by: this.userId,
@@ -64,16 +56,24 @@ class Individual extends Component<Props, State> {
     const { memorias } = this.state
     return (
       <View className="memorias">
-        <View>个人中心</View>
+        <View
+          style={{
+            marginLeft: '20rpx',
+          }}
+        >
+          个人中心:
+        </View>
         {memorias.map(x => {
           return (
             <AtCard
-              note="小Tips"
               title={x.title}
               onClick={this.onMemoriaClick.bind(this, x.id)}
               className="memoriaCard"
             >
-              这也是内容区 可以随意定义功能
+              <View className="cardContent">
+                <Image src={x.thumb} className="image" mode="aspectFill" />
+                <View className="feeling">{x.feeling}</View>
+              </View>
             </AtCard>
           )
         })}
