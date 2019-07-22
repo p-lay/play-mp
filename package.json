@@ -16,7 +16,7 @@
     "local": "yarn build:local --watch",
     "sit": "yarn build:sit --watch",
     "build": "yarn build:local",
-    "deploy": "node deploy.js SIT",
+    "d": "node deploy.js SIT",
     "gen": "git submodule update --remote && ts-node type.gen.ts"
   },
   "author": "",
