@@ -6,7 +6,7 @@ import { uploadFiles } from '../../util/qiniu'
 import { Component, Config, observer } from '../util/component'
 import { path } from '../../util/path'
 import { AtCalendar, AtImagePicker, AtButton } from 'taro-ui'
-import { getDisplayTime, getUnix } from '../util/dayjs'
+import { getDisplayTime, getUnix } from '../../util/dayjs'
 
 type ResourceFiles = {
   url: string
@@ -176,7 +176,7 @@ class MemoriaUpdate extends Component<Props, State> {
         state.selectDate = getDisplayTime(res.create_time)
         state.existResources = res.resources
         state.existImageFiles = res.resources
-          .filter(x => x.type != 'video')
+          .filter(x => x.type == 'image')
           .map(x => ({ url: x.url }))
         state.existVideoFiles = res.resources
           .filter(x => x.type == 'video')

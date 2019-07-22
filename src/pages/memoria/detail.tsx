@@ -13,7 +13,7 @@ import { request } from '../../util/request'
 import { path } from '../../util/path'
 import { Component, Config, observer } from '../util/component'
 import { AuthModal } from '../../components/authModal'
-import { getDisplayTime } from '../util/dayjs'
+import { getDisplayTime } from '../../util/dayjs'
 
 type Props = {}
 
