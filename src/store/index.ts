@@ -1,9 +1,11 @@
 import { getStore as getMobxStore } from '@tarojs/mobx'
 import { UserStore, userStore } from './user'
 import { AuthModalStore, authModalStore } from './authModal'
+import { MemoriaStore, memoriaStore } from './memoria'
 
 export type Store = Partial<{
   userStore: UserStore
+  memoriaStore: MemoriaStore
 }>
 
 type StoreWithAuth = Store & {
@@ -14,7 +16,9 @@ export type WithStore<T> = T & Store
 
 let allStore: any = null
 
-export const getStore = <T extends keyof StoreWithAuth>(storeName: T): StoreWithAuth[T] => {
+export const getStore = <T extends keyof StoreWithAuth>(
+  storeName: T,
+): StoreWithAuth[T] => {
   if (!allStore) {
     allStore = getMobxStore()
   }
@@ -24,4 +28,5 @@ export const getStore = <T extends keyof StoreWithAuth>(storeName: T): StoreWith
 export default {
   userStore,
   authModalStore,
+  memoriaStore,
 }

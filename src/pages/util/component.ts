@@ -12,6 +12,7 @@ export type Config = TaroConfig & {
 }
 
 @inject('userStore')
+@inject('memoriaStore')
 export class Component<Props = {}, State = {}> extends TaroComponent<
   Props & Store,
   State
@@ -30,6 +31,18 @@ export class Component<Props = {}, State = {}> extends TaroComponent<
 
   get userState() {
     return this.userStore
+  }
+
+  get memoriaStore(): Store['memoriaStore'] {
+    try {
+      return this.props.memoriaStore
+    } catch (err) {
+      throw 'Inject memoriaStore before'
+    }
+  }
+
+  get memoriaState() {
+    return this.memoriaStore
   }
 
   get userId() {

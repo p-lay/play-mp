@@ -184,18 +184,16 @@ class MemoriaUpdate extends Component<Props, State> {
 
   componentDidMount() {
     if (this.isEditPage) {
-      request('getMemoria', { id: this.memoriaId }).then(res => {
-        const state = res as State
-        state.selectDate = getDisplayTime(res.create_time)
-        state.existResources = res.resources
-        state.existImageFiles = res.resources
-          .filter(x => x.type == 'image')
-          .map(x => ({ url: x.url }))
-        state.existVideoFiles = res.resources
-          .filter(x => x.type == 'video')
-          .map(x => ({ url: x.url }))
-        this.setState(state)
-      })
+      const state = this.memoriaState.res as State
+      state.selectDate = getDisplayTime(state.create_time)
+      state.existResources = state.resources
+      state.existImageFiles = state.resources
+        .filter(x => x.type == 'image')
+        .map(x => ({ url: x.url }))
+      state.existVideoFiles = state.resources
+        .filter(x => x.type == 'video')
+        .map(x => ({ url: x.url }))
+      this.setState(state)
     }
   }
 

@@ -52,6 +52,7 @@ class MemoriaDetail extends Component<Props, State> {
 
   componentDidMount() {
     request('getMemoria', { id: this.memoriaId }).then(res => {
+      this.memoriaStore.setRes(res)
       this.setState({
         title: res.title,
         feeling: res.feeling,
