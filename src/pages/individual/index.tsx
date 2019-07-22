@@ -4,7 +4,7 @@ import { request } from '../../util/request'
 import { path } from '../../util/path'
 import { Component, Config, observer } from '../util/component'
 import { AtCard } from 'taro-ui'
-import '../vue/list.scss'
+import '../memoria/list.scss'
 
 type Props = {}
 

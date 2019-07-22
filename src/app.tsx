@@ -3,7 +3,7 @@ import './taro-ui.scss'
 import '@tarojs/async-await'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { Provider } from '@tarojs/mobx'
-import MemoriaList from './pages/vue/list'
+import MemoriaList from './pages/memoria/list'
 import store from './store'
 import { UserAction } from './action/user'
 
@@ -17,10 +17,10 @@ class App extends Component {
    */
   config: Config = {
     pages: [
-      'pages/vue/list',
+      'pages/memoria/list',
       'pages/index/index',
-      'pages/vue/update',
-      'pages/vue/detail',
+      'pages/memoria/update',
+      'pages/memoria/detail',
       'pages/individual/index'
     ],
     window: {

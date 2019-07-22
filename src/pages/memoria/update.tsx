@@ -11,7 +11,7 @@ type Props = {}
 type State = {} & BaseMemoria & Partial<MemoriaAppendInfo>
 
 @observer
-class VueUpdate extends Component<Props, State> {
+class MemoriaUpdate extends Component<Props, State> {
   config: Config = {
     navigationBarTitleText: 'create & edit',
   }
@@ -95,7 +95,7 @@ class VueUpdate extends Component<Props, State> {
   render() {
     const { title, feeling, resources } = this.state
     return (
-      <View className="vueUpdate">
+      <View className="memoriaUpdate">
         <Text>标题</Text>
         <Input onInput={this.onTitleChange} value={title} className="title" />
         <Text>想法</Text>
@@ -111,10 +111,10 @@ class VueUpdate extends Component<Props, State> {
         </View>
         <Button onClick={this.onAddImage}>Add Photo</Button>
         <Button onClick={this.onAddVideo}>Add Video</Button>
-        <Button onClick={this.onSave}>Save Vue</Button>
+        <Button onClick={this.onSave}>Save</Button>
       </View>
     )
   }
 }
 
-export default VueUpdate
+export default MemoriaUpdate

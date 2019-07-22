@@ -51,7 +51,7 @@ class MemoriaDetail extends Component<Props, State> {
   render() {
     const { title, feeling, resources } = this.state
     return (
-      <View className="vueUpdate">
+      <View className="memoriaUpdate">
         <AuthModal />
         <Text>标题</Text>
         <View className="title">{title}</View>
