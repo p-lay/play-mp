@@ -40,28 +40,33 @@ class MemoriaUpdate extends Component<Props, State> {
     })
   }
 
-  onAddImage() {
-    const self = this
-    Taro.chooseImage({
-      success: async function(res) {
-        const uploadResult = await uploadFiles(res.tempFilePaths)
-        console.log('after image', uploadResult)
-        self.setState(prevState => ({
-          resources: prevState.resources.concat(
-            uploadResult.map(x => ({ url: x.uploadedUrl })),
-          ),
-        }))
-      },
-    })
+  async onAddImage() {
+    const res = await Taro.chooseImage()
+    const uploadResult = await uploadFiles(res.tempFilePaths)
+    this.setState(prevState => ({
+      resources: prevState.resources.concat(
+        uploadResult.map(x => ({ url: x.uploadedUrl })),
+      ),
+    }))
   }
 
   async onAddVideo() {
     const res = await Taro.chooseVideo()
     const uploadResult = await uploadFiles([
-      (res as any).thumbTempFilePath,
       res.tempFilePath,
+      (res as any).thumbTempFilePath,
     ])
-    console.log('after video', uploadResult)
+    const videoResource: BaseResource = {
+      url: uploadResult[0].uploadedUrl,
+      thumb: '',
+      type: 'video',
+    }
+    if (uploadResult.length == 2) {
+      videoResource.thumb = uploadResult[1].uploadedUrl
+    }
+    this.setState(prevState => ({
+      resources: prevState.resources.concat(videoResource),
+    }))
   }
 
   async onSave() {
@@ -106,7 +111,8 @@ class MemoriaUpdate extends Component<Props, State> {
         />
         <View className="photoContainer">
           {resources.map(x => {
-            return <Image src={x.url} className="photo" />
+            const url = x.thumb || x.url
+            return <Image src={url} className="photo" />
           })}
         </View>
         <Button onClick={this.onAddImage}>Add Photo</Button>

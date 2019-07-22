@@ -1,6 +1,14 @@
 import './update.scss'
 import Taro from '@tarojs/taro'
-import { View, Button, Text, Input, Textarea, Image } from '@tarojs/components'
+import {
+  View,
+  Button,
+  Text,
+  Input,
+  Textarea,
+  Image,
+  Video,
+} from '@tarojs/components'
 import { request } from '../../util/request'
 import { path } from '../../util/path'
 import { Component, Config, observer } from '../util/component'
@@ -59,7 +67,13 @@ class MemoriaDetail extends Component<Props, State> {
         <View className="feeling">{feeling}</View>
         <View className="photoContainer">
           {resources.map(x => {
-            return <Image src={x.url} className="photo" />
+            const isVideo = x.type == 'video'
+            return (
+              <View>
+                {isVideo && <Video src={x.url} />}
+                {!isVideo && <Image src={x.url} className="photo" />}
+              </View>
+            )
           })}
         </View>
         <Button onClick={this.onEdit}>Edit</Button>

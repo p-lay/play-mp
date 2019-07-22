@@ -29,10 +29,6 @@ interface IUploadResponse {
 function _uploadFile(
   filename: string,
 ): Promise<{ filename: string; uploadedUrl: string }> {
-  showLoading({
-    title: '正在上传...',
-    mask: true,
-  })
   return taroUpload({
     filePath: filename,
     url: 'https://upload.qiniup.com',
@@ -44,7 +40,6 @@ function _uploadFile(
     const data: IUploadResponse = res.data
       ? JSON.parse(res.data)
       : { key: '', hash: '' }
-    hideLoading()
     return {
       filename,
       uploadedUrl: getQiniuSourceUrl(data.key),
@@ -52,7 +47,7 @@ function _uploadFile(
   })
 }
 
-export const uploadFile = async (filename: string) => {
+const uploadFile = async (filename: string) => {
   const currentTime = Number((new Date().getTime() / 1000).toFixed(0))
   if (
     !qiniuConfig.token ||
@@ -63,7 +58,7 @@ export const uploadFile = async (filename: string) => {
       qiniuConfig.token = data.token
       qiniuConfig.expires_second = data.expires_second
       qiniuConfig.prevGetTime = currentTime
-      return _uploadFile(filename)
+      return await _uploadFile(filename)
     } else {
       showModal({
         title: '提示信息',
@@ -75,12 +70,17 @@ export const uploadFile = async (filename: string) => {
       }
     }
   } else {
-    return _uploadFile(filename)
+    return await _uploadFile(filename)
   }
 }
 
 export const uploadFiles = (filenames: string[]) => {
+  showLoading({
+    title: '正在上传...',
+    mask: true,
+  })
   return Promise.all(filenames.map(x => uploadFile(x))).then(uploaded => {
+    hideLoading()
     return uploaded
   })
 }
