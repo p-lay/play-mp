@@ -100,7 +100,7 @@ class MemoriaUpdate extends Component<Props, State> {
   onExistVideoRemove(index: number) {
     this.setState(prevState => ({
       existVideoFiles: prevState.existVideoFiles.filter(
-        (x, index) => index != index,
+        (x, i) => i != index,
       ),
     }))
   }
@@ -108,7 +108,7 @@ class MemoriaUpdate extends Component<Props, State> {
   onVideoRemove(index: number) {
     this.setState(prevState => ({
       newVideoFiles: prevState.newVideoFiles.filter(
-        (x, index) => index != index,
+        (x, i) => i != index,
       ),
     }))
   }
