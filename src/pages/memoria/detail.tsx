@@ -1,19 +1,12 @@
 import './update.scss'
 import Taro from '@tarojs/taro'
-import {
-  View,
-  Button,
-  Text,
-  Input,
-  Textarea,
-  Image,
-  Video,
-} from '@tarojs/components'
+import { View, Text, Image, Video } from '@tarojs/components'
 import { request } from '../../util/request'
 import { path } from '../../util/path'
 import { Component, Config, observer } from '../util/component'
 import { AuthModal } from '../../components/authModal'
 import { getDisplayTime } from '../../util/dayjs'
+import { AtButton } from 'taro-ui'
 
 type Props = {}
 
@@ -36,14 +29,14 @@ class MemoriaDetail extends Component<Props, State> {
     return this.$router.params.id
   }
 
-  async onEdit() {
+  onEdit = () => {
     path.memoria.update.navigate({
       id: this.memoriaId,
       action: 'edit',
     })
   }
 
-  async onDelete() {
+  onDelete = async () => {
     await request('deleteMemoria', {
       id: this.memoriaId,
     })
@@ -58,12 +51,13 @@ class MemoriaDetail extends Component<Props, State> {
         feeling: res.feeling,
         resources: res.resources,
         createTime: getDisplayTime(res.create_time),
+        create_by: res.create_by
       })
     })
   }
 
   render() {
-    const { title, feeling, resources, createTime } = this.state
+    const { title, feeling, resources, createTime, create_by } = this.state
     return (
       <View className="memoriaUpdate">
         <AuthModal />
@@ -78,13 +72,23 @@ class MemoriaDetail extends Component<Props, State> {
             return (
               <View>
                 {isVideo && <Video src={x.url} />}
-                {!isVideo && <Image src={x.url} className="photo" mode='aspectFill'/>}
+                {!isVideo && (
+                  <Image src={x.url} className="photo" mode="aspectFill" />
+                )}
               </View>
             )
           })}
         </View>
-        <Button onClick={this.onEdit}>Edit</Button>
-        <Button onClick={this.onDelete}>Delete</Button>
+        {create_by == this.userId && (
+          <AtButton onClick={this.onEdit} type="primary" size='small'>
+            Edit
+          </AtButton>
+        )}
+        {create_by == this.userId && (
+          <AtButton onClick={this.onDelete} type="primary" size='small'>
+            Delete
+          </AtButton>
+        )}
       </View>
     )
   }

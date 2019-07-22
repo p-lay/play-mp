@@ -250,7 +250,11 @@ class MemoriaUpdate extends Component<Props, State> {
                       className="at-icon at-icon-subtract-circle icon"
                       onClick={this.onExistVideoRemove.bind(this, index)}
                     ></View>
-                    <Video src={x.url} className="resource" />
+                    <Video
+                      src={x.url}
+                      className="resource"
+                      showCenterPlayBtn={false}
+                    />
                   </View>
                 )
               })}
@@ -264,7 +268,11 @@ class MemoriaUpdate extends Component<Props, State> {
                     className="at-icon at-icon-subtract-circle icon"
                     onClick={this.onVideoRemove.bind(this, index)}
                   ></View>
-                  <Video src={x.url} className="resource" />
+                  <Video
+                    src={x.url}
+                    className="resource"
+                    showCenterPlayBtn={false}
+                  />
                 </View>
               )
             })}
