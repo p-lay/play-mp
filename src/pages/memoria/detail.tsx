@@ -13,10 +13,14 @@ import { request } from '../../util/request'
 import { path } from '../../util/path'
 import { Component, Config, observer } from '../util/component'
 import { AuthModal } from '../../components/authModal'
+import { getDisplayTime } from '../util/dayjs'
 
 type Props = {}
 
-type State = {} & BaseMemoria & Partial<MemoriaAppendInfo>
+type State = {
+  createTime: string
+} & BaseMemoria &
+  Partial<MemoriaAppendInfo>
 
 @observer
 class MemoriaDetail extends Component<Props, State> {
@@ -52,12 +56,13 @@ class MemoriaDetail extends Component<Props, State> {
         title: res.title,
         feeling: res.feeling,
         resources: res.resources,
+        createTime: getDisplayTime(res.create_time),
       })
     })
   }
 
   render() {
-    const { title, feeling, resources } = this.state
+    const { title, feeling, resources, createTime } = this.state
     return (
       <View className="memoriaUpdate">
         <AuthModal />
@@ -65,6 +70,7 @@ class MemoriaDetail extends Component<Props, State> {
         <View className="title">{title}</View>
         <Text>想法</Text>
         <View className="feeling">{feeling}</View>
+        <View>{`时间: ${createTime}`}</View>
         <View className="photoContainer">
           {resources.map(x => {
             const isVideo = x.type == 'video'
