@@ -1,4 +1,5 @@
 .memorias {
+  margin-bottom: 160px;
   .memoriaCard {
     margin-bottom: 20px;
 
@@ -21,12 +22,12 @@
     position: fixed;
     right: 20px;
     bottom: 20px;
-    &.memoriaBtn {
+    &.topBtn {
       right: 20px;
-      bottom: 100px;
+      bottom: 150px;
     }
-    &.individualBtn {
-      right: 100px;
+    &.leftBtn {
+      right: 150px;
       bottom: 30px;
     }
   }

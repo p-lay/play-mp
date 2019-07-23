@@ -28,6 +28,7 @@ interface GetMemoriaListRes {
     id: number
     thumb: string,
     feeling: string
+    creator: string
   }[]
 }
 

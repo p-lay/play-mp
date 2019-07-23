@@ -99,21 +99,21 @@ class MemoriaDetail extends Component<Props, State> {
         </View>
         {create_by == this.userId && (
           <View className="fabBtn">
-            <AtFab onClick={this.onFabClick} size="small">
+            <AtFab onClick={this.onFabClick}>
               <Text className="at-fab__icon at-icon at-icon-menu"></Text>
             </AtFab>
           </View>
         )}
         {isActionVisible && (
-          <View className="fabBtn memoriaBtn">
-            <AtFab onClick={this.onEdit} size="small">
+          <View className="fabBtn topBtn">
+            <AtFab onClick={this.onEdit}>
               <Text className="at-fab__icon at-icon at-icon-edit"></Text>
             </AtFab>
           </View>
         )}
         {isActionVisible && (
-          <View className="fabBtn individualBtn">
-            <AtFab onClick={this.onDelete} size="small">
+          <View className="fabBtn leftBtn">
+            <AtFab onClick={this.onDelete}>
               <Text className="at-fab__icon at-icon at-icon-trash"></Text>
             </AtFab>
           </View>

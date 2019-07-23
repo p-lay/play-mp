@@ -84,6 +84,7 @@ class MemoriaList extends Component<Props, State> {
               title={x.title}
               onClick={this.onMemoriaClick.bind(this, x.id)}
               className="memoriaCard"
+              note={x.creator}
             >
               <View className="cardContent">
                 <Image src={x.thumb} className="image" mode="aspectFill" />
@@ -93,20 +94,20 @@ class MemoriaList extends Component<Props, State> {
           )
         })}
         <View className="fabBtn">
-          <AtFab onClick={this.onFabClick} size="small">
+          <AtFab onClick={this.onFabClick}>
             <Text className="at-fab__icon at-icon at-icon-menu"></Text>
           </AtFab>
         </View>
         {isActionVisible && (
-          <View className="fabBtn memoriaBtn">
-            <AtFab onClick={this.onGoCreateMemoria} size="small">
+          <View className="fabBtn topBtn">
+            <AtFab onClick={this.onGoCreateMemoria}>
               <Text className="at-fab__icon at-icon at-icon-add-circle"></Text>
             </AtFab>
           </View>
         )}
         {isActionVisible && (
-          <View className="fabBtn individualBtn">
-            <AtFab onClick={this.onGoIndividual} size="small">
+          <View className="fabBtn leftBtn">
+            <AtFab onClick={this.onGoIndividual}>
               <Text className="at-fab__icon at-icon at-icon-user"></Text>
             </AtFab>
           </View>
