@@ -15,8 +15,8 @@
     "build:prod": "cross-env NODE_ENV=PROD taro build --type weapp",
     "local": "yarn build:local --watch",
     "sit": "yarn build:sit --watch",
-    "build": "yarn build:local",
     "d": "node deploy.js SIT",
+    "d:prod": "node deploy.js PROD 'this is a production build'",
     "gen": "git submodule update --remote && ts-node type.gen.ts"
   },
   "author": "",

@@ -34,12 +34,10 @@ const action = {
     const store = getStore('userStore')
     if (store.authSetting.userInfo) {
       const res = await Taro.getUserInfo()
-      const userInfo = res.userInfo as UserInfo
+      const wechatUserInfo = res.userInfo as UserInfo
       const { userId } = store.userInfo
-      await request('updateUserInfo', {
-        userId,
-        ...userInfo,
-      })
+      const userInfo = { userId, ...wechatUserInfo }
+      await request('updateUserInfo', userInfo)
       const authModalStore = getStore('authModalStore')
       store.setUserInfo(userInfo)
       authModalStore.closeUserInfo()

@@ -33,7 +33,7 @@ function init() {
   // @ts-ignore
   let argv = process.argv
   argv.splice(0, 2)
-  let [env, version, versionDesc = ''] = argv
+  let [env, versionDesc = '', version = null] = argv
   uploadParams.env = env
   uploadParams.version = version
   uploadParams.versionDesc = versionDesc
