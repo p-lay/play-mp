@@ -1,10 +1,10 @@
 .memoriaUpdate {
   margin: 0 auto;
   width: 640px;
-  margin-bottom: 160px;
+  padding-bottom: 160px;
 
   .title {
-    height: 60px;
+    min-height: 60px;
     margin-bottom: 20px;
     &.update {
       border: 1px solid black;

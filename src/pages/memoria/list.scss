@@ -1,5 +1,5 @@
 .memorias {
-  margin-bottom: 160px;
+  padding-bottom: 160px;
   .memoriaCard {
     margin-bottom: 20px;
 
@@ -15,6 +15,9 @@
         flex: 1;
         padding: 20px;
         overflow: hidden;
+      }
+      .at-icon-edit {
+        font-size: 40px;
       }
     }
   }

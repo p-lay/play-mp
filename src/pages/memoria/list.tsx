@@ -6,6 +6,7 @@ import { path } from '../../util/path'
 import { Component, Config, observer } from '../util/component'
 import { AuthModal } from '../../components/authModal/index'
 import { AtCard, AtFab } from 'taro-ui'
+import { getDisplayTime } from '../../util/dayjs'
 
 type Props = {}
 
@@ -37,6 +38,10 @@ class MemoriaList extends Component<Props, State> {
       isActionVisible: false,
     })
     path.memoria.update.navigate()
+  }
+
+  onGoEditMemoria = (id: number) => {
+    path.memoria.update.navigate({ id, action: 'edit', from: 'list' })
   }
 
   onGoIndividual = () => {
@@ -85,10 +90,15 @@ class MemoriaList extends Component<Props, State> {
               onClick={this.onMemoriaClick.bind(this, x.id)}
               className="memoriaCard"
               note={x.creator}
+              extra={getDisplayTime(x.createTime)}
             >
               <View className="cardContent">
                 <Image src={x.thumb} className="image" mode="aspectFill" />
                 <View className="feeling">{x.feeling}</View>
+                <View
+                  className="at-icon at-icon-edit"
+                  onClick={this.onGoEditMemoria.bind(this, x.id)}
+                />
               </View>
             </AtCard>
           )

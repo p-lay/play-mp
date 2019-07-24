@@ -6,7 +6,7 @@ import { uploadFiles } from '../../util/qiniu'
 import { Component, Config, observer } from '../util/component'
 import { path } from '../../util/path'
 import { AtCalendar, AtImagePicker, AtButton } from 'taro-ui'
-import { getDisplayTime, getUnix } from '../../util/dayjs'
+import { getStrictDisplayTime, getUnix } from '../../util/dayjs'
 
 type ResourceFiles = {
   url: string
@@ -32,7 +32,7 @@ class MemoriaUpdate extends Component<Props, State> {
   }
 
   state: State = {
-    selectDate: getDisplayTime(),
+    selectDate: getStrictDisplayTime(),
     newImageFiles: [],
     existImageFiles: [],
     newVideoFiles: [],
@@ -45,6 +45,11 @@ class MemoriaUpdate extends Component<Props, State> {
 
   get isEditPage() {
     return this.$router.params.action == 'edit'
+  }
+  get isEditPageFromList() {
+    return (
+      this.$router.params.action == 'edit' && this.$router.params.from == 'list'
+    )
   }
 
   onTitleChange(event: any) {
@@ -182,19 +187,26 @@ class MemoriaUpdate extends Component<Props, State> {
     path.home.redirect()
   }
 
-  componentDidMount() {
-    if (this.isEditPage) {
-      const state = this.memoriaState.res as State
-      state.selectDate = getDisplayTime(state.create_time)
-      state.existResources = state.resources
-      state.existImageFiles = state.resources
-        .filter(x => x.type == 'image')
-        .map(x => ({ url: x.url }))
-      state.existVideoFiles = state.resources
-        .filter(x => x.type == 'video')
-        .map(x => ({ url: x.url }))
-      this.setState(state)
+  async componentDidMount() {
+    let state = null
+    if (this.isEditPageFromList) {
+      const res = await request('getMemoria', {
+        id: this.memoriaId,
+      })
+      state = res
+    } else if (this.isEditPage) {
+      state = this.memoriaState.res as State
     }
+
+    state.selectDate = getStrictDisplayTime(state.create_time)
+    state.existResources = state.resources
+    state.existImageFiles = state.resources
+      .filter(x => x.type == 'image')
+      .map(x => ({ url: x.url }))
+    state.existVideoFiles = state.resources
+      .filter(x => x.type == 'video')
+      .map(x => ({ url: x.url }))
+    this.setState(state)
   }
 
   render() {
@@ -212,7 +224,11 @@ class MemoriaUpdate extends Component<Props, State> {
     return (
       <View className="memoriaUpdate">
         <Text>标题</Text>
-        <Input onInput={this.onTitleChange} value={title} className="title update" />
+        <Input
+          onInput={this.onTitleChange}
+          value={title}
+          className="title update"
+        />
         <Text>想法</Text>
         <Textarea
           onInput={this.onFeelingChange}

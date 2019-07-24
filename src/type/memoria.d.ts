@@ -26,9 +26,10 @@ interface GetMemoriaListRes {
   memorias: {
     title: string
     id: number
-    thumb: string,
+    thumb: string
     feeling: string
     creator: string
+    createTime: number
   }[]
 }
 
