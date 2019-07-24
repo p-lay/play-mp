@@ -40,7 +40,8 @@ class MemoriaList extends Component<Props, State> {
     path.memoria.update.navigate()
   }
 
-  onGoEditMemoria = (id: number) => {
+  onGoEditMemoria = (id: number, eve: any) => {
+    eve.stopPropagation()
     path.memoria.update.navigate({ id, action: 'edit', from: 'list' })
   }
 
