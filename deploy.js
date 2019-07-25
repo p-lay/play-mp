@@ -84,11 +84,11 @@ async function getVersionChoice(lastVersion, inputVersion) {
         uploadParams.versionUpdateType = '0'
       }
     } else {
-      const result = await inquirer.prompt([
+      const verifyResult = await inquirer.prompt([
         {
           type: 'input',
           name: 'verify',
-          message: `上次发布版本号:${lastVersion},输入版本号:${inputVersion},是否确认？ Y/N`,
+          message: `上次发布版本号:${lastVersion},输入版本号:${inputVersion},是否确认？ y/n`,
         },
       ])
       if (verifyResult.verify.toLowerCase() !== 'y') {
@@ -117,9 +117,9 @@ async function checkVersionAndNext() {
 function getDescriptionAndNext() {
   let commitId = getGitCommitId()
   if (uploadParams.versionDesc === '') {
-    uploadParams.versionDesc = `commit id:${commitId}`
+    uploadParams.versionDesc = `commit id: ${commitId}`
   } else {
-    uploadParams.versionDesc += `, commit id:${commitId}`
+    uploadParams.versionDesc += `, commit id: ${commitId}`
   }
   build()
 }
@@ -190,17 +190,27 @@ function setVersion() {
 }
 // 计算版本号
 function getNewVersion() {
+  let lastVersion = ''
+  const inputVersion = uploadParams.version
+  let versionParamKey = ''
   if (uploadParams.env === config.sitEnv) {
-    let devNowVersion = getAutoIncrementalVersion(uploadParams.devLastVersion)
-    uploadParams.updateVersion = {
-      dev: devNowVersion,
-    }
-    return devNowVersion
+    lastVersion = uploadParams.devLastVersion
+    versionParamKey = 'dev'
   } else if (uploadParams.env === config.prodEnv) {
+    lastVersion = uploadParams.prodLastVersion
+    versionParamKey = 'prod'
+  }
+  if (inputVersion) {
     uploadParams.updateVersion = {
-      prod: uploadParams.version,
+      [versionParamKey]: inputVersion,
     }
-    return uploadParams.version
+    return inputVersion
+  } else {
+    const newVersion = getAutoIncrementalVersion(lastVersion)
+    uploadParams.updateVersion = {
+      [versionParamKey]: newVersion,
+    }
+    return newVersion
   }
 }
 
