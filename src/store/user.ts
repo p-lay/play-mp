@@ -17,12 +17,20 @@ const store = {
     isNew: true,
   } as GetUserInfoRes,
 
+  userSetting: {
+    isAlertLargeData: true,
+  },
+
   authSetting: {
     userInfo: false,
   },
 
   setUserInfo(userInfo: any) {
     this.userInfo = userInfo
+  },
+
+  ignoreLargeDataWarning() {
+    this.userSetting.isAlertLargeData = false
   },
 
   setWeChatAuthSetting(authSetting: AuthSetting) {

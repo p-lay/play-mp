@@ -16,8 +16,19 @@
         padding: 20px;
         overflow: hidden;
       }
-      .at-icon-edit {
-        font-size: 40px;
+      .icon {
+        display: flex;
+        flex-direction: column;
+
+        .at-icon-edit,
+        .at-icon-loading-3 {
+          font-size: 40px;
+        }
+        .at-icon-loading-3 {
+          color: red;
+          margin-bottom: 20px;
+          animation: warning-loading linear 1s infinite;
+        }
       }
     }
   }
@@ -33,5 +44,20 @@
       right: 150px;
       bottom: 30px;
     }
+  }
+}
+
+@keyframes warning-loading {
+  25% {
+    transform: rotate(90deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(270deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

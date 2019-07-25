@@ -1,6 +1,6 @@
 export const env_mode = process.env.NODE_ENV
 
-const isSit = env_mode == 'SIT'
+const isSit = true //env_mode == 'SIT'
 const isProd = env_mode == 'PROD'
 let serverHost = 'http://localhost:3000'
 if (isProd) {

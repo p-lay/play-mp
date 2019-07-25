@@ -5,7 +5,7 @@ import { request } from '../../util/request'
 import { uploadFiles } from '../../util/qiniu'
 import { Component, Config, observer } from '../util/component'
 import { path } from '../../util/path'
-import { AtCalendar, AtImagePicker, AtButton } from 'taro-ui'
+import { AtCalendar, AtImagePicker, AtButton, AtSwitch } from 'taro-ui'
 import { getStrictDisplayTime, getUnix } from '../../util/dayjs'
 
 type ResourceFiles = {
@@ -114,6 +114,12 @@ class MemoriaUpdate extends Component<Props, State> {
     }))
   }
 
+  onLargeDataFlagChange = () => {
+    this.setState(prevState => ({
+      isLargeData: !prevState.isLargeData,
+    }))
+  }
+
   onSave = async () => {
     const {
       title,
@@ -124,6 +130,7 @@ class MemoriaUpdate extends Component<Props, State> {
       existImageFiles,
       newVideoFiles,
       existVideoFiles,
+      isLargeData,
     } = this.state
     const resource = newImageFiles.concat(newVideoFiles)
     const uploadResult = await uploadFiles(resource.map(x => x.url))
@@ -167,6 +174,7 @@ class MemoriaUpdate extends Component<Props, State> {
         create_time: getUnix(selectDate),
         existResourceIds: resultExistResources.map(x => x.id),
         thumb,
+        isLargeData,
       })
     } else {
       if (resources.length) {
@@ -182,6 +190,7 @@ class MemoriaUpdate extends Component<Props, State> {
         tags: [],
         create_time: getUnix(selectDate),
         thumb,
+        isLargeData,
       })
     }
     path.home.redirect()
@@ -219,6 +228,7 @@ class MemoriaUpdate extends Component<Props, State> {
       existVideoFiles,
       selectDate,
       isCalendarVisible,
+      isLargeData,
     } = this.state
 
     return (
@@ -235,6 +245,7 @@ class MemoriaUpdate extends Component<Props, State> {
           value={feeling}
           className="feeling update"
         />
+
         <View className="dateDisplay" onClick={this.onShowCalendar}>
           <View className="at-icon at-icon-calendar"></View>
           {selectDate}
@@ -245,6 +256,14 @@ class MemoriaUpdate extends Component<Props, State> {
             currentDate={selectDate}
           />
         )}
+
+        <AtSwitch
+          title="多图预警"
+          checked={isLargeData}
+          onChange={this.onLargeDataFlagChange}
+          border={false}
+        ></AtSwitch>
+
         <View className="photoContainer">
           {this.isEditPage && (
             <AtImagePicker
@@ -271,6 +290,7 @@ class MemoriaUpdate extends Component<Props, State> {
                       src={x.url}
                       className="resource"
                       showCenterPlayBtn={false}
+                      showPlayBtn={false}
                     />
                   </View>
                 )
@@ -289,23 +309,24 @@ class MemoriaUpdate extends Component<Props, State> {
                     src={x.url}
                     className="resource"
                     showCenterPlayBtn={false}
+                    showPlayBtn={false}
                   />
                 </View>
               )
             })}
           </View>
         </View>
-        <AtButton onClick={this.onAddVideo} type="primary" size="small">
-          Video
-        </AtButton>
-        <AtButton
-          onClick={this.onSave}
-          type="primary"
-          size="small"
-          className="saveBtn"
-        >
-          Save
-        </AtButton>
+
+        <View
+          className="at-icon at-icon-file-video"
+          onClick={this.onAddVideo}
+        ></View>
+
+        <View className="saveBtn">
+          <AtButton onClick={this.onSave} type="primary">
+            Save
+          </AtButton>
+        </View>
       </View>
     )
   }

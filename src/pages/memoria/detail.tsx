@@ -6,7 +6,7 @@ import { path } from '../../util/path'
 import { Component, Config, observer } from '../util/component'
 import { AuthModal } from '../../components/authModal'
 import { getDisplayTime } from '../../util/dayjs'
-import { AtFab } from 'taro-ui'
+import { AtFab, AtSwitch } from 'taro-ui'
 
 type Props = {}
 
@@ -63,6 +63,7 @@ class MemoriaDetail extends Component<Props, State> {
         resources: res.resources,
         createTime: getDisplayTime(res.create_time),
         create_by: res.create_by,
+        isLargeData: res.isLargeData,
       })
     })
   }
@@ -75,15 +76,26 @@ class MemoriaDetail extends Component<Props, State> {
       createTime,
       create_by,
       isActionVisible,
+      isLargeData
     } = this.state
     return (
       <View className="memoriaUpdate">
         <AuthModal />
+
         <Text>标题:</Text>
         <View className="title">{title}</View>
+
         <Text>想法:</Text>
         <View className="feeling">{feeling}</View>
         <View>{`时间: ${createTime}`}</View>
+
+        <AtSwitch
+          title="多图预警"
+          checked={isLargeData}
+          border={false}
+          disabled={true}
+        ></AtSwitch>
+
         <View className="photoContainer">
           {resources.map(x => {
             const isVideo = x.type == 'video'
