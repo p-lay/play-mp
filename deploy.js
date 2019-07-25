@@ -1,5 +1,4 @@
 const { exec, execSync } = require('child_process')
-// @ts-ignore
 const inquirer = require('inquirer')
 const request = require('request')
 const util = require('util')
@@ -10,7 +9,7 @@ const config = {
   sitEnv: 'SIT',
   sitBuildCommand: 'npm run build:sit',
   prodEnv: 'PROD',
-  prodBuildCommand: 'npm run build:prod'
+  prodBuildCommand: 'npm run build:prod',
 }
 const uploadParams = {
   env: config.sitEnv,
@@ -30,100 +29,97 @@ init()
  * 测试版本自动生成版本号，生产环境必须手动输入
  */
 function init() {
-  // @ts-ignore
   let argv = process.argv
   argv.splice(0, 2)
-  let [env, versionDesc = '', version = null] = argv
+  let [env, versionDesc = '', version = ''] = argv
   uploadParams.env = env
   uploadParams.version = version
   uploadParams.versionDesc = versionDesc
   uploadParams.filePath = getFilePath()
-  getVersionFromOrigin()
+  fetchLastVersionAndNext()
 }
 
 //从服务器获取版本号
-function getVersionFromOrigin() {
+function fetchLastVersionAndNext() {
   request.get(config.getVersionUrl, function(error, response, body) {
     if (!error && response.statusCode == 200) {
-      uploadParams.devLastVersion = JSON.parse(body).version.dev
-      uploadParams.prodLastVersion = JSON.parse(body).version.prod
-      versionHandler()
+      const res = JSON.parse(body)
+      uploadParams.devLastVersion = res.version.dev
+      uploadParams.prodLastVersion = res.version.prod
+      checkVersionAndNext()
     } else {
       throw new Error(`版本号获取失败,请重试 ${error}`)
     }
   })
 }
-//版本号处理
-async function versionHandler() {
-  if (uploadParams.env === config.sitEnv) {
-    console.log(`\n --- 体验版环境 --- \n`)
-    if (!uploadParams.devLastVersion || uploadParams.devLastVersion === '') {
-      if (!uploadParams.version) {
-        throw new Error('没有历史版本记录,必须输入版本号（eg:0.0.1)')
-      } else {
-        if (!/^\d+\.\d+\.\d+$/.test(uploadParams.version)) {
-          throw new Error('没有历史版本记录,请输入合法的版本号（eg:0.0.1）')
-        }
+
+function verifyVersion(version) {
+  if (!/^\d+\.\d+\.\d+$/.test(version)) {
+    throw new Error('请输入合法的版本号（eg:0.0.1）')
+  }
+}
+async function getVersionChoice(lastVersion, inputVersion) {
+  if (!lastVersion && !inputVersion) {
+    throw new Error('没有历史版本记录,必须输入版本号（eg:0.0.1)')
+  }
+  inputVersion && verifyVersion(inputVersion)
+
+  if (lastVersion) {
+    console.log(`上次发布版本号: ${lastVersion}\n`)
+    if (!inputVersion) {
+      let verifyResult = await inquirer.prompt([
+        {
+          type: 'list',
+          name: 'updateType',
+          message: `请选择更新版本类型`,
+          choices: ['0.0.X', '0.X.0', 'X.0.0'],
+          default: '0.0.X',
+        },
+      ])
+      if (verifyResult.updateType === '0.0.X') {
+        uploadParams.versionUpdateType = '2'
+      } else if (verifyResult.updateType === '0.X.0') {
+        uploadParams.versionUpdateType = '1'
+      } else if (verifyResult.updateType === 'X.0.0') {
+        uploadParams.versionUpdateType = '0'
       }
     } else {
-      if (!uploadParams.version) {
-        console.log(`\n上次发布版本号: ${uploadParams.devLastVersion}\n`)
-
-        let verifyResult = await inquirer.prompt([
-          {
-            type: 'list',
-            name: 'updateType',
-            message: `请选择更新版本类型`,
-            choices: ['0.0.X', '0.X.0', 'X.0.0'],
-            default: '0.0.X',
-          },
-        ])
-        if (verifyResult.updateType === '0.0.X') {
-          uploadParams.versionUpdateType = '2'
-        } else if (verifyResult.updateType === '0.X.0') {
-          uploadParams.versionUpdateType = '1'
-        } else if (verifyResult.updateType === 'X.0.0') {
-          uploadParams.versionUpdateType = '0'
-        }
-      } else {
-        if (!/^\d+\.\d+\.\d+$/.test(uploadParams.version)) {
-          throw new Error('请输入合法的版本号（eg:0.0.1）')
-        }
-        let verifyResult = await inquirer.prompt([
-          {
-            type: 'input',
-            name: 'verify',
-            message: `上次发布版本号:${
-              uploadParams.devLastVersion
-            },输入版本号:${uploadParams.version},是否确认？ Y/N`,
-          },
-        ])
-        if (verifyResult.verify !== 'Y' && verifyResult.verify !== 'y') {
-          console.log('\n请检查版本号后重试，即将退出')
-          // @ts-ignore
-          process.exit()
-        }
+      const result = await inquirer.prompt([
+        {
+          type: 'input',
+          name: 'verify',
+          message: `上次发布版本号:${lastVersion},输入版本号:${inputVersion},是否确认？ Y/N`,
+        },
+      ])
+      if (verifyResult.verify.toLowerCase() !== 'y') {
+        console.log('请检查版本号后重试，即将退出')
+        process.exit()
       }
     }
-  } else if (uploadParams.env === 'PROD') {
-    console.log(`\n --- 生产环境 --- \n`)
-    console.log(`当前生产版本号:${uploadParams.prodLastVersion}`)
-    if (
-      !uploadParams.version ||
-      !/^\d+\.\d+\.\d+$/.test(uploadParams.version)
-    ) {
-      uploadParams.version = await checkInputProdVersion()
-    }
   }
-  getVersionDesc()
 }
-//todo 获取git commit-id
-function getVersionDesc() {
+//版本号处理
+async function checkVersionAndNext() {
+  if (uploadParams.env === config.sitEnv) {
+    await getVersionChoice(uploadParams.devLastVersion, uploadParams.version)
+  } else if (uploadParams.env === config.prodEnv) {
+    await getVersionChoice(uploadParams.prodLastVersion, uploadParams.version)
+    // if (
+    //   !uploadParams.version ||
+    //   !/^\d+\.\d+\.\d+$/.test(uploadParams.version)
+    // ) {
+    //   uploadParams.version = await checkAndGetInputVersion()
+    // }
+  }
+  getDescriptionAndNext()
+}
+
+function getDescriptionAndNext() {
   let commitId = getGitCommitId()
   if (uploadParams.versionDesc === '') {
-    uploadParams.versionDesc = `git版本记录:${commitId}`
+    uploadParams.versionDesc = `commit id:${commitId}`
   } else {
-    uploadParams.versionDesc += `,git版本:${commitId}`
+    uploadParams.versionDesc += `, commit id:${commitId}`
   }
   build()
 }
@@ -140,11 +136,9 @@ function build() {
 //上传
 async function upload() {
   console.log('\n～～～～ Start upload～～～～')
-  let nowVersion = versionComputed()
+  let nowVersion = getNewVersion()
   let uploadResult = execCommand(
-    `/Applications/wechatwebdevtools.app/Contents/MacOS/cli -u ${nowVersion}@${
-      uploadParams.filePath
-    }/dist --upload-desc ${uploadParams.versionDesc}`,
+    `/Applications/wechatwebdevtools.app/Contents/MacOS/cli -u ${nowVersion}@${uploadParams.filePath}/dist --upload-desc ${uploadParams.versionDesc}`,
   )
   console.log(`\n${uploadResult}`)
   console.log(`\nnow version --- ${nowVersion}`)
@@ -195,9 +189,9 @@ function setVersion() {
   )
 }
 // 计算版本号
-function versionComputed() {
+function getNewVersion() {
   if (uploadParams.env === config.sitEnv) {
-    let devNowVersion = updateDevVersion()
+    let devNowVersion = getAutoIncrementalVersion(uploadParams.devLastVersion)
     uploadParams.updateVersion = {
       dev: devNowVersion,
     }
@@ -210,12 +204,10 @@ function versionComputed() {
   }
 }
 
-function updateDevVersion() {
-  let versionNumbers = uploadParams.devLastVersion
-    .split('.')
-    .map(function(item) {
-      return parseInt(item)
-    })
+function getAutoIncrementalVersion(lastVersion) {
+  let versionNumbers = lastVersion.split('.').map(function(item) {
+    return parseInt(item)
+  })
   if (uploadParams.versionUpdateType === '0') {
     versionNumbers = [versionNumbers[0] + 1, 0, 0]
   } else if (uploadParams.versionUpdateType === '1') {
@@ -226,10 +218,9 @@ function updateDevVersion() {
   return versionNumbers.join('.')
 }
 //检查输入内容
-async function checkInputProdVersion(retryCount = 3) {
+async function checkAndGetInputVersion(retryCount = 3) {
   if (retryCount == 0) {
     console.log('\n版本号有误，即将退出')
-    // @ts-ignore
     process.exit()
   }
   let verifyResult = await inquirer.prompt([
@@ -242,7 +233,7 @@ async function checkInputProdVersion(retryCount = 3) {
   if (!/^\d+\.\d+\.\d+$/.test(verifyResult.version)) {
     console.log('\n版本号输入有误（eg:0.0.1)')
     retryCount--
-    await checkInputProdVersion(retryCount)
+    await checkAndGetInputVersion(retryCount)
   } else {
     console.log(`\n你输入的版本号为${verifyResult.version}`)
     return verifyResult.version
