@@ -57,6 +57,8 @@ class MemoriaDetail extends Component<Props, State> {
   componentDidMount() {
     request('getMemoria', { id: this.memoriaId }).then(res => {
       this.memoriaStore.setRes(res)
+      this.config.shareTitle = res.title
+      this.config.shareUrl = path.memoria.detail.str({ id: this.memoriaId })
       this.setState({
         title: res.title,
         feeling: res.feeling,
@@ -76,7 +78,7 @@ class MemoriaDetail extends Component<Props, State> {
       createTime,
       create_by,
       isActionVisible,
-      isLargeData
+      isLargeData,
     } = this.state
     return (
       <View className="memoriaUpdate">
