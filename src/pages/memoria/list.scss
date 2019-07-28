@@ -4,16 +4,16 @@
     margin-bottom: 20px;
 
     .cardContent {
-      height: 145px;
+      height: 160px;
       display: flex;
       .image {
-        width: 145px;
+        width: 200px;
         height: 100%;
       }
       .feeling {
         display: inline-block;
         flex: 1;
-        padding: 20px;
+        margin: 0 10px;
         overflow: hidden;
       }
       .icon {
@@ -44,6 +44,13 @@
       right: 150px;
       bottom: 30px;
     }
+  }
+
+  .at-card__content {
+    padding: 10px 20px;
+  }
+  .at-card__content-note {
+    margin-top: 10px;
   }
 }
 

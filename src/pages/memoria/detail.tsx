@@ -6,7 +6,7 @@ import { path } from '../../util/path'
 import { Component, Config, observer } from '../util/component'
 import { AuthModal } from '../../components/authModal'
 import { getDisplayTime } from '../../util/dayjs'
-import { AtFab, AtSwitch } from 'taro-ui'
+import { AtFab } from 'taro-ui'
 
 type Props = {}
 
@@ -54,6 +54,19 @@ class MemoriaDetail extends Component<Props, State> {
     }))
   }
 
+  videoContext: Taro.VideoContext = null
+  onVideoPlay = (id: string) => {
+    this.videoContext = Taro.createVideoContext(id, this)
+    this.videoContext.requestFullScreen({ direction: 0 })
+  }
+
+  onVideoFullscreenChange = ({ detail }) => {
+    const { fullScreen } = detail
+    if (!fullScreen) {
+      this.videoContext.pause()
+    }
+  }
+
   componentDidMount() {
     request('getMemoria', { id: this.memoriaId }).then(res => {
       this.memoriaStore.setRes(res)
@@ -70,6 +83,10 @@ class MemoriaDetail extends Component<Props, State> {
     })
   }
 
+  componentWillUnmount() {
+    this.videoContext = null
+  }
+
   render() {
     const {
       title,
@@ -78,32 +95,34 @@ class MemoriaDetail extends Component<Props, State> {
       createTime,
       create_by,
       isActionVisible,
-      isLargeData,
     } = this.state
     return (
       <View className="memoriaUpdate">
         <AuthModal />
 
-        <Text>标题:</Text>
         <View className="title">{title}</View>
 
-        <Text>想法:</Text>
         <View className="feeling">{feeling}</View>
-        <View>{`时间: ${createTime}`}</View>
 
-        <AtSwitch
-          title="多图预警"
-          checked={isLargeData}
-          border={false}
-          disabled={true}
-        ></AtSwitch>
+        <View className="time">{`时间: ${createTime}`}</View>
 
         <View className="photoContainer">
           {resources.map(x => {
             const isVideo = x.type == 'video'
+            const idStr = x.id.toString()
             return (
               <View>
-                {isVideo && <Video src={x.url} />}
+                {isVideo && (
+                  <Video
+                    src={x.url}
+                    enableDanmu={true}
+                    danmuBtn={true}
+                    id={idStr}
+                    onPlay={this.onVideoPlay.bind(this, idStr)}
+                    playBtnPosition="center"
+                    onFullscreenChange={this.onVideoFullscreenChange}
+                  />
+                )}
                 {!isVideo && (
                   <Image src={x.url} className="photo" mode="aspectFill" />
                 )}
