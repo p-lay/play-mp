@@ -44,12 +44,10 @@ class MemoriaUpdate extends Component<Props, State> {
   }
 
   get isEditPage() {
-    return this.$router.params.action == 'edit'
+    return !!this.memoriaId
   }
-  get isEditPageFromList() {
-    return (
-      this.$router.params.action == 'edit' && this.$router.params.from == 'list'
-    )
+  get isEditPageFromDetail() {
+    return !!this.memoriaId && this.$router.params.from == 'detail'
   }
 
   onTitleChange(event: any) {
@@ -198,13 +196,13 @@ class MemoriaUpdate extends Component<Props, State> {
 
   async componentDidMount() {
     let state = null
-    if (this.isEditPageFromList) {
+    if (this.isEditPageFromDetail) {
+      state = this.memoriaState.res as State
+    } else if (this.isEditPage) {
       const res = await request('getMemoria', {
         id: this.memoriaId,
       })
       state = res
-    } else if (this.isEditPage) {
-      state = this.memoriaState.res as State
     }
 
     state.selectDate = getStrictDisplayTime(state.create_time)

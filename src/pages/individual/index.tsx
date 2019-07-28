@@ -3,13 +3,13 @@ import { View, Image } from '@tarojs/components'
 import { request } from '../../util/request'
 import { path } from '../../util/path'
 import { Component, Config, observer } from '../util/component'
-import { AtCard } from 'taro-ui'
+import { AtCard, AtButton } from 'taro-ui'
 import '../memoria/list.scss'
 
 type Props = {}
 
 type State = {
-  memorias: GetMemoriaListRes['memorias']
+  memorias: SearchMemoriaRes['memorias']
 }
 
 @observer
@@ -29,8 +29,12 @@ class Individual extends Component<Props, State> {
     })
   }
 
+  onGoTagManagement = () => {
+    path.tagManagement.redirect()
+  }
+
   async fetchData() {
-    await request('getMemoriaList', {
+    await request('searchMemoria', {
       create_by: this.userId,
     }).then(res => {
       this.setState({
@@ -61,8 +65,17 @@ class Individual extends Component<Props, State> {
             marginLeft: '20rpx',
           }}
         >
-          个人中心:
+          <AtButton
+            onClick={this.onGoTagManagement}
+            className="tagManagementBtn"
+            size="small"
+            type="primary"
+          >
+            标签管理
+          </AtButton>
+          <View>个人中心:</View>
         </View>
+
         {memorias.map(x => {
           return (
             <AtCard

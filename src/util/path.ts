@@ -10,6 +10,7 @@ const _path = {
     list: ('/pages/memoria/list' as any) as PathGoMethod,
   },
   individual: ('/pages/individual/index' as any) as PathGoMethod,
+  tagManagement: ('/pages/tagManagement/index' as any) as PathGoMethod,
 }
 
 type PathGoMethod = {

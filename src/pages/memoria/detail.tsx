@@ -37,7 +37,7 @@ class MemoriaDetail extends Component<Props, State> {
     })
     path.memoria.update.navigate({
       id: this.memoriaId,
-      action: 'edit',
+      from: 'detail',
     })
   }
 

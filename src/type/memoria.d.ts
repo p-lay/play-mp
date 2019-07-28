@@ -19,11 +19,11 @@ interface GetMemoriaReq {
   id: number
 }
 
-interface GetMemoriaListReq {
+interface SearchMemoriaReq {
   tag_ids?: number[]
   create_by?: number
 }
-interface GetMemoriaListRes {
+interface SearchMemoriaRes {
   memorias: {
     title: string
     id: number

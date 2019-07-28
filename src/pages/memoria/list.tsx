@@ -11,7 +11,7 @@ import { getDisplayTime } from '../../util/dayjs'
 type Props = {}
 
 type State = {
-  memorias: GetMemoriaListRes['memorias']
+  memorias: SearchMemoriaRes['memorias']
   isActionVisible: boolean
   isGoPageModalVisible: boolean
 }
@@ -48,8 +48,6 @@ class MemoriaList extends Component<Props, State> {
     eve.stopPropagation()
     this.goFunction = path.memoria.update.navigate.bind(null, {
       id,
-      action: 'edit',
-      from: 'list',
     })
     if (isLargeData && this.userState.userSetting.isAlertLargeData) {
       this.setState({
@@ -95,7 +93,7 @@ class MemoriaList extends Component<Props, State> {
   }
 
   async fetchData() {
-    await request('getMemoriaList', {}).then(res => {
+    await request('searchMemoria', {}).then(res => {
       this.setState({
         memorias: res.memorias,
       })

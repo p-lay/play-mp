@@ -21,7 +21,8 @@ class App extends Component {
       'pages/index/index',
       'pages/memoria/update',
       'pages/memoria/detail',
-      'pages/individual/index'
+      'pages/individual/index',
+      'pages/tagManagement/index'
     ],
     window: {
       backgroundTextStyle: 'light',
