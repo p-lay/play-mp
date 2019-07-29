@@ -7,6 +7,7 @@ import { Component, Config, observer } from '../util/component'
 import { path } from '../../util/path'
 import { AtCalendar, AtImagePicker, AtButton, AtSwitch } from 'taro-ui'
 import { getStrictDisplayTime, getUnix } from '../../util/dayjs'
+import { TagSearch } from '../../components/tagSearch/index'
 
 type ResourceFiles = {
   url: string
@@ -37,6 +38,7 @@ class MemoriaUpdate extends Component<Props, State> {
     existImageFiles: [],
     newVideoFiles: [],
     existVideoFiles: [],
+    tags: [],
   } as any
 
   get memoriaId() {
@@ -130,6 +132,8 @@ class MemoriaUpdate extends Component<Props, State> {
       existVideoFiles,
       isLargeData,
     } = this.state
+    const tagIds = this.tagSearchRef.getSelectedTagIds()
+    const tags: Tag[] = tagIds.map(x => ({ id: x, name: '' }))
     const resource = newImageFiles.concat(newVideoFiles)
     const uploadResult = await uploadFiles(resource.map(x => x.url))
     if (uploadResult.filter(x => !!x.uploadedUrl).length != resource.length) {
@@ -168,7 +172,7 @@ class MemoriaUpdate extends Component<Props, State> {
         title,
         feeling,
         resources,
-        tags: [],
+        tags,
         create_time: getUnix(selectDate),
         existResourceIds: resultExistResources.map(x => x.id),
         thumb,
@@ -185,13 +189,18 @@ class MemoriaUpdate extends Component<Props, State> {
         title,
         feeling,
         resources,
-        tags: [],
+        tags,
         create_time: getUnix(selectDate),
         thumb,
         isLargeData,
       })
     }
     path.home.redirect()
+  }
+
+  tagSearchRef: TagSearch = null
+  getTagSearch = (ref: any) => {
+    this.tagSearchRef = ref
   }
 
   async componentDidMount() {
@@ -213,6 +222,7 @@ class MemoriaUpdate extends Component<Props, State> {
     state.existVideoFiles = state.resources
       .filter(x => x.type == 'video')
       .map(x => ({ url: x.url }))
+
     this.setState(state)
   }
 
@@ -227,6 +237,7 @@ class MemoriaUpdate extends Component<Props, State> {
       selectDate,
       isCalendarVisible,
       isLargeData,
+      tags,
     } = this.state
 
     return (
@@ -243,6 +254,13 @@ class MemoriaUpdate extends Component<Props, State> {
           value={feeling}
           className="feeling update"
         />
+        <View className="at-icon at-icon-tag">标签</View>
+        <View className="tagDisplay update">
+          <TagSearch
+            defaultSelectedIds={tags.map(x => x.id)}
+            ref={this.getTagSearch}
+          />
+        </View>
 
         <View className="dateDisplay" onClick={this.onShowCalendar}>
           <View className="at-icon at-icon-calendar"></View>

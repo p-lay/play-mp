@@ -5,7 +5,7 @@ interface Tag {
 }
 
 interface AddTagReq {
-  name: string
+  names: string[]
 }
 
 interface DeleteTagReq {

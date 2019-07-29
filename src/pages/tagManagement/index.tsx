@@ -1,9 +1,16 @@
 import './index.scss'
 import Taro from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import { request } from '../../util/request'
 import { Component, Config, observer } from '../util/component'
-import { AtSearchBar, AtTag, AtModal, AtFloatLayout, AtButton } from 'taro-ui'
+import {
+  AtSearchBar,
+  AtTag,
+  AtModal,
+  AtFloatLayout,
+  AtButton,
+  AtTextarea,
+} from 'taro-ui'
 import { path } from '../../util/path'
 
 type Props = {}
@@ -16,6 +23,7 @@ type State = {
   isRelatedTagContentVisible: boolean
   deleteTagId: number
   relatedMemorias: number[]
+  newTagNameStr: string
 }
 
 @observer
@@ -33,6 +41,7 @@ class TagManagement extends Component<Props, State> {
     isRelatedTagContentVisible: false,
     deleteTagId: 0,
     relatedMemorias: [],
+    newTagNameStr: '',
   }
 
   onSearchTagChange = keyword => {
@@ -66,12 +75,30 @@ class TagManagement extends Component<Props, State> {
   onDeleteConfirm = async () => {
     await request('deleteTag', { id: this.state.deleteTagId })
     this.onDeleteClose()
+    this.fetchData()
   }
 
   onDeleteTag = (tagId: number) => {
     this.setState({
       deleteTagId: tagId,
       isDeleteModalVisible: true,
+    })
+  }
+
+  onAddTag = async () => {
+    const names = this.state.newTagNameStr.split(',')
+    await request('addTag', {
+      names,
+    })
+    this.setState({
+      newTagNameStr: '',
+    })
+    this.fetchData()
+  }
+
+  onNewTagStrChange = ({ detail }) => {
+    this.setState({
+      newTagNameStr: detail.value,
     })
   }
 
@@ -120,6 +147,7 @@ class TagManagement extends Component<Props, State> {
       isDeleteModalVisible,
       isRelatedTagContentVisible,
       relatedMemorias,
+      newTagNameStr,
     } = this.state
     return (
       <View className="tagManagement">
@@ -186,6 +214,20 @@ class TagManagement extends Component<Props, State> {
             )
           })}
         </View>
+
+        <View className="tagWrapper newTag">
+          {!isDeleteModalVisible && (
+            <AtTextarea
+              value={newTagNameStr}
+              className="textarea"
+              placeholder="在此添加标签 逗号分隔"
+              onChange={this.onNewTagStrChange}
+            />
+          )}
+        </View>
+        <AtButton onClick={this.onAddTag} type="primary" className="addTabBtn">
+          添加标签
+        </AtButton>
       </View>
     )
   }

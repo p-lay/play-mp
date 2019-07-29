@@ -24,6 +24,7 @@ class MemoriaDetail extends Component<Props, State> {
 
   state: State = {
     resources: [],
+    tags: [],
     isActionVisible: false,
   } as any
 
@@ -79,6 +80,7 @@ class MemoriaDetail extends Component<Props, State> {
         createTime: getDisplayTime(res.create_time),
         create_by: res.create_by,
         isLargeData: res.isLargeData,
+        tags: res.tags,
       })
     })
   }
@@ -95,6 +97,7 @@ class MemoriaDetail extends Component<Props, State> {
       createTime,
       create_by,
       isActionVisible,
+      tags,
     } = this.state
     return (
       <View className="memoriaUpdate">
@@ -103,6 +106,10 @@ class MemoriaDetail extends Component<Props, State> {
         <View className="title">{title}</View>
 
         <View className="feeling">{feeling}</View>
+
+        <View className="tagDisplay at-icon at-icon-tag">
+          <Text className="text">{tags.map(x => x.name).join(',')}</Text>
+        </View>
 
         <View className="time">{`时间: ${createTime}`}</View>
 

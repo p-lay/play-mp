@@ -22,6 +22,16 @@
   .time {
     margin-bottom: 20px;
   }
+  .tagDisplay {
+    margin-bottom: 20px;
+    &.update {
+      border: 1px solid black;
+    }
+
+    .text {
+      margin-left: 20px;
+    }
+  }
   .dateDisplay {
     display: flex;
     align-items: center;
