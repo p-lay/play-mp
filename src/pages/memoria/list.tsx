@@ -1,12 +1,20 @@
 import './list.scss'
 import Taro from '@tarojs/taro'
-import { View, Image, Text } from '@tarojs/components'
+import { View, Image, Text, Button } from '@tarojs/components'
 import { request } from '../../util/request'
 import { path } from '../../util/path'
 import { Component, Config, observer } from '../util/component'
 import { AuthModal } from '../../components/authModal/index'
-import { AtCard, AtFab, AtModal } from 'taro-ui'
+import {
+  AtCard,
+  AtFab,
+  AtModal,
+  AtModalContent,
+  AtModalAction,
+  AtButton,
+} from 'taro-ui'
 import { getDisplayTime } from '../../util/dayjs'
+import { TagSearch } from '../../components/tagSearch/index'
 
 type Props = {}
 
@@ -14,6 +22,7 @@ type State = {
   memorias: SearchMemoriaRes['memorias']
   isActionVisible: boolean
   isGoPageModalVisible: boolean
+  isTagSearchModalVisible: boolean
 }
 
 @observer
@@ -27,6 +36,7 @@ class MemoriaList extends Component<Props, State> {
     memorias: [],
     isActionVisible: false,
     isGoPageModalVisible: false,
+    isTagSearchModalVisible: false,
   }
 
   goFunction: Function
@@ -92,8 +102,44 @@ class MemoriaList extends Component<Props, State> {
     }))
   }
 
+  pendingSelectTagIds: number[] = []
+  onTagSelectChange = (tagIds: number[]) => {
+    this.pendingSelectTagIds = tagIds
+  }
+
+  tagSearchRef: TagSearch = null
+  getTagSearchRef = (ref) => {
+    this.tagSearchRef = ref
+  }
+
+  confirmedTagIds: number[] = []
+  onTagSearch = () => {
+    this.setState({
+      isTagSearchModalVisible: false,
+    })
+    this.tagSearchRef.resetKeyword()
+    this.confirmedTagIds = this.pendingSelectTagIds
+    this.fetchData()
+  }
+
+  onTagSearchModalOpen = () => {
+    this.setState({
+      isTagSearchModalVisible: true,
+    })
+  }
+
+  onTagSearchModalClose = () => {
+    this.setState({
+      isTagSearchModalVisible: false,
+    })
+    this.tagSearchRef.resetKeyword()
+    this.tagSearchRef.setSelectedTagIds(this.confirmedTagIds)
+  }
+
   async fetchData() {
-    await request('searchMemoria', {}).then(res => {
+    await request('searchMemoria', {
+      tag_ids: this.confirmedTagIds,
+    }).then(res => {
       this.setState({
         memorias: res.memorias,
       })
@@ -114,7 +160,12 @@ class MemoriaList extends Component<Props, State> {
   }
 
   render() {
-    const { memorias, isActionVisible, isGoPageModalVisible } = this.state
+    const {
+      memorias,
+      isActionVisible,
+      isGoPageModalVisible,
+      isTagSearchModalVisible,
+    } = this.state
     return (
       <View className="memorias">
         <AuthModal allowClose />
@@ -127,6 +178,27 @@ class MemoriaList extends Component<Props, State> {
           onConfirm={this.onGoPageConfirm}
           content="多图预警！！！当数据量较大时在右上角显示红色的圈圈 最好在wifi环境下打开"
         />
+        <AtModal
+          isOpened={isTagSearchModalVisible}
+          onClose={this.onTagSearchModalClose}
+          onCancel={this.onTagSearchModalClose}
+        >
+          <AtModalContent>
+            <TagSearch onSelectChange={this.onTagSelectChange} ref={this.getTagSearchRef}/>
+          </AtModalContent>
+          <AtModalAction>
+            <Button onClick={this.onTagSearchModalClose}>取消</Button>
+            <Button onClick={this.onTagSearch}>确定</Button>
+          </AtModalAction>
+        </AtModal>
+        <AtButton
+          size="small"
+          onClick={this.onTagSearchModalOpen}
+          className="tabSearchBtn"
+        >
+          标签搜索
+        </AtButton>
+
         {memorias.map(x => {
           return (
             <AtCard

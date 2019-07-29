@@ -7,6 +7,7 @@ import { request } from '../../util/request'
 
 type Props = {
   defaultSelectedIds?: number[]
+  onSelectChange?: (value: number[]) => void
 }
 
 type State = {
@@ -48,13 +49,36 @@ export class TagSearch extends Component<Props, State> {
     } else {
       selectedIds = this.state.selectedIds.concat(id)
     }
-    this.setState({
-      selectedIds,
-    })
+    this.setState(
+      {
+        selectedIds,
+      },
+      () => {
+        this.props.onSelectChange &&
+          this.props.onSelectChange(this.state.selectedIds)
+      },
+    )
   }
 
   getSelectedTagIds() {
     return this.state.selectedIds
+  }
+
+  setSelectedTagIds(ids: number[]) {
+    this.setState({
+      selectedIds: ids,
+    })
+  }
+
+  resetKeyword() {
+    if (this.state.keyword) {
+      this.setState(
+        {
+          keyword: '',
+        },
+        this.fetchData,
+      )
+    }
   }
 
   async fetchData() {
@@ -68,14 +92,15 @@ export class TagSearch extends Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (
-      nextProps.defaultSelectedIds &&
-      nextProps.defaultSelectedIds.length > 0 &&
-      !this.state.selectedIds.length
-    ) {
-      this.setState({
-        selectedIds: nextProps.defaultSelectedIds,
-      })
+    if (!this.state.selectedIds.length) {
+      if (
+        nextProps.defaultSelectedIds &&
+        nextProps.defaultSelectedIds.length > 0
+      ) {
+        this.setState({
+          selectedIds: nextProps.defaultSelectedIds,
+        })
+      }
     }
   }
 
