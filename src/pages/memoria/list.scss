@@ -1,37 +1,58 @@
 .memorias {
-  padding-bottom: 160px;
-  .memoriaCard {
+  .header {
+    display: flex;
+    height: 60px;
+    margin: 0 25px;
     margin-bottom: 20px;
+    .count {
+      margin-left: auto;
+      align-self: center;
+    }
+  }
 
-    .cardContent {
-      height: 160px;
-      display: flex;
-      .image {
-        width: 200px;
-        height: 100%;
-      }
-      .feeling {
-        display: inline-block;
-        flex: 1;
-        margin: 0 10px;
-        overflow: hidden;
-      }
-      .icon {
+  .body {
+    height: calc(100vh - 80px);
+    overflow: auto;
+    .memoriaCard {
+      margin-bottom: 20px;
+
+      .cardContent {
+        height: 160px;
         display: flex;
-        flex-direction: column;
-
-        .at-icon-edit,
-        .at-icon-loading-3 {
-          font-size: 40px;
+        .image {
+          width: 200px;
+          height: 100%;
         }
-        .at-icon-loading-3 {
-          color: red;
-          margin-bottom: 20px;
-          animation: warning-loading linear 1s infinite;
+        .feeling {
+          display: inline-block;
+          flex: 1;
+          margin: 0 10px;
+          overflow: hidden;
+        }
+        .icon {
+          display: flex;
+          flex-direction: column;
+
+          .at-icon-edit,
+          .at-icon-loading-3 {
+            font-size: 40px;
+          }
+          .at-icon-loading-3 {
+            color: red;
+            margin-bottom: 20px;
+            animation: warning-loading linear 1s infinite;
+          }
         }
       }
     }
+    .endLine {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #999;
+      font-size: 25px;
+    }
   }
+
   .fabBtn {
     position: fixed;
     right: 20px;
@@ -44,9 +65,6 @@
       right: 150px;
       bottom: 30px;
     }
-  }
-  .tabSearchBtn {
-    margin-left: 25px;
   }
 
   .at-card__content {

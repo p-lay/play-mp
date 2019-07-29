@@ -103,7 +103,7 @@ class MemoriaDetail extends Component<Props, State> {
       <View className="memoriaUpdate">
         <AuthModal />
 
-        <View className="title">{title}</View>
+        <View className="title detail">{title}</View>
 
         <View className="feeling">{feeling}</View>
 
@@ -111,7 +111,9 @@ class MemoriaDetail extends Component<Props, State> {
           <Text className="text">{tags.map(x => x.name).join(',')}</Text>
         </View>
 
-        <View className="time">{`时间: ${createTime}`}</View>
+        <View className="time at-icon at-icon-calendar">
+          <Text className="text">{createTime}</Text>
+        </View>
 
         <View className="photoContainer">
           {resources.map(x => {

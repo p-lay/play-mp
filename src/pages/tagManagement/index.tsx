@@ -86,7 +86,8 @@ class TagManagement extends Component<Props, State> {
   }
 
   onAddTag = async () => {
-    const names = this.state.newTagNameStr.split(',')
+    const newTagNameStr = this.state.newTagNameStr.replace('，', ',')
+    const names = newTagNameStr.split(',')
     await request('addTag', {
       names,
     })

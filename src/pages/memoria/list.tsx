@@ -108,7 +108,7 @@ class MemoriaList extends Component<Props, State> {
   }
 
   tagSearchRef: TagSearch = null
-  getTagSearchRef = (ref) => {
+  getTagSearchRef = ref => {
     this.tagSearchRef = ref
   }
 
@@ -184,50 +184,61 @@ class MemoriaList extends Component<Props, State> {
           onCancel={this.onTagSearchModalClose}
         >
           <AtModalContent>
-            <TagSearch onSelectChange={this.onTagSelectChange} ref={this.getTagSearchRef}/>
+            <TagSearch
+              onSelectChange={this.onTagSelectChange}
+              ref={this.getTagSearchRef}
+            />
           </AtModalContent>
           <AtModalAction>
             <Button onClick={this.onTagSearchModalClose}>取消</Button>
             <Button onClick={this.onTagSearch}>确定</Button>
           </AtModalAction>
         </AtModal>
-        <AtButton
-          size="small"
-          onClick={this.onTagSearchModalOpen}
-          className="tabSearchBtn"
-        >
-          标签搜索
-        </AtButton>
 
-        {memorias.map(x => {
-          return (
-            <AtCard
-              title={x.title}
-              onClick={this.onMemoriaClick.bind(this, x.id, x.isLargeData)}
-              className="memoriaCard"
-              note={x.creator}
-              extra={getDisplayTime(x.createTime)}
-            >
-              <View className="cardContent">
-                <Image src={x.thumb} className="image" mode="aspectFill" />
-                <View className="feeling">{x.feeling}</View>
-                <View className="icon">
-                  {x.isLargeData && (
-                    <View className="at-icon at-icon-loading-3" />
-                  )}
-                  <View
-                    className="at-icon at-icon-edit"
-                    onClick={this.onGoEditMemoria.bind(
-                      this,
-                      x.id,
-                      x.isLargeData,
+        <View className="header">
+          <AtButton
+            size="small"
+            onClick={this.onTagSearchModalOpen}
+            className="tabSearchBtn"
+          >
+            标签搜索
+          </AtButton>
+          <Text className='count'>{`memorias: ${memorias.length}`}</Text>
+        </View>
+
+        <View className="body">
+          {memorias.map(x => {
+            return (
+              <AtCard
+                title={x.title}
+                onClick={this.onMemoriaClick.bind(this, x.id, x.isLargeData)}
+                className="memoriaCard"
+                note={`${x.creator} tag`}
+                extra={getDisplayTime(x.createTime)}
+              >
+                <View className="cardContent">
+                  <Image src={x.thumb} className="image" mode="aspectFill" />
+                  <View className="feeling">{x.feeling}</View>
+                  <View className="icon">
+                    {x.isLargeData && (
+                      <View className="at-icon at-icon-loading-3" />
                     )}
-                  />
+                    <View
+                      className="at-icon at-icon-edit"
+                      onClick={this.onGoEditMemoria.bind(
+                        this,
+                        x.id,
+                        x.isLargeData,
+                      )}
+                    />
+                  </View>
                 </View>
-              </View>
-            </AtCard>
-          )
-        })}
+              </AtCard>
+            )
+          })}
+          <View className='endLine'>the end</View>
+        </View>
+
         <View className="fabBtn">
           <AtFab onClick={this.onFabClick}>
             <Text className="at-fab__icon at-icon at-icon-menu"></Text>

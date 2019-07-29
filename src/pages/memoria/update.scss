@@ -11,6 +11,9 @@
       align-items: center;
       padding: 10px;
     }
+    &.detail {
+      font-size: 40px;
+    }
   }
   .feeling {
     margin-bottom: 20px;
@@ -21,15 +24,18 @@
   }
   .time {
     margin-bottom: 20px;
+    display: block;
+    .text {
+      margin-left: 10px;
+    }
   }
   .tagDisplay {
     margin-bottom: 20px;
     &.update {
       border: 1px solid black;
     }
-
     .text {
-      margin-left: 20px;
+      margin-left: 10px;
     }
   }
   .dateDisplay {
