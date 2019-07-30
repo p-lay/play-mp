@@ -1,6 +1,6 @@
 import './list.scss'
 import Taro from '@tarojs/taro'
-import { View, Image, Text, Button } from '@tarojs/components'
+import { View, Image, Text, Button, ScrollView } from '@tarojs/components'
 import { request } from '../../util/request'
 import { path } from '../../util/path'
 import { Component, Config, observer } from '../util/component'
@@ -203,17 +203,19 @@ class MemoriaList extends Component<Props, State> {
           >
             标签搜索
           </AtButton>
-          <Text className='count'>{`memorias: ${memorias.length}`}</Text>
+          <Text className="count">{`memorias: ${memorias.length}`}</Text>
         </View>
 
-        <View className="body">
+        <ScrollView className="body" scrollY={true}>
           {memorias.map(x => {
             return (
               <AtCard
                 title={x.title}
                 onClick={this.onMemoriaClick.bind(this, x.id, x.isLargeData)}
                 className="memoriaCard"
-                note={`${x.creator} tag`}
+                note={`${x.creator} 资源: ${x.resourceCount}${
+                  x.tagNames.length ? ' 标签: ' + x.tagNames.join(', ') : ''
+                }`}
                 extra={getDisplayTime(x.createTime)}
               >
                 <View className="cardContent">
@@ -236,8 +238,8 @@ class MemoriaList extends Component<Props, State> {
               </AtCard>
             )
           })}
-          <View className='endLine'>the end</View>
-        </View>
+          <View className="endLine">the end</View>
+        </ScrollView>
 
         <View className="fabBtn">
           <AtFab onClick={this.onFabClick}>
