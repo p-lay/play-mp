@@ -23,18 +23,23 @@ interface SearchMemoriaReq {
   tag_ids?: number[]
   create_by?: number
 }
-interface SearchMemoriaRes {
-  memorias: {
-    title: string
+
+interface SearchMemoriaItem {
+  title: string
+  id: number
+  thumb: string
+  feeling: string
+  creator: {
     id: number
-    thumb: string
-    feeling: string
-    creator: string
-    createTime: number
-    isLargeData: boolean
-    resourceCount: number
-    tagNames: string[]
-  }[]
+    name: string
+  }
+  createTime: number
+  isLargeData: boolean
+  resourceCount: number
+  tagNames: string[]
+}
+interface SearchMemoriaRes {
+  memorias: SearchMemoriaItem[]
 }
 
 interface MemoriaAppendInfo {

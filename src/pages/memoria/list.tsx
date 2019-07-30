@@ -213,7 +213,7 @@ class MemoriaList extends Component<Props, State> {
                 title={x.title}
                 onClick={this.onMemoriaClick.bind(this, x.id, x.isLargeData)}
                 className="memoriaCard"
-                note={`${x.creator} 资源: ${x.resourceCount}${
+                note={`${x.creator.name} 资源: ${x.resourceCount}${
                   x.tagNames.length ? ' 标签: ' + x.tagNames.join(', ') : ''
                 }`}
                 extra={getDisplayTime(x.createTime)}
@@ -225,14 +225,16 @@ class MemoriaList extends Component<Props, State> {
                     {x.isLargeData && (
                       <View className="at-icon at-icon-loading-3" />
                     )}
-                    <View
-                      className="at-icon at-icon-edit"
-                      onClick={this.onGoEditMemoria.bind(
-                        this,
-                        x.id,
-                        x.isLargeData,
-                      )}
-                    />
+                    {x.creator.id == this.userId && (
+                      <View
+                        className="at-icon at-icon-edit"
+                        onClick={this.onGoEditMemoria.bind(
+                          this,
+                          x.id,
+                          x.isLargeData,
+                        )}
+                      />
+                    )}
                   </View>
                 </View>
               </AtCard>
