@@ -1,8 +1,10 @@
 import Taro from '@tarojs/taro'
 import { AtCurtain, AtButton } from 'taro-ui'
-import { Component, observer, inject } from '../../pages/util/component'
+import { observer, inject } from '../../util/component'
 import { AuthModalStore } from '../../store/authModal'
 import { UserAction } from '../../action/user'
+import { config } from '../../config'
+import { View } from '@tarojs/components'
 
 type Props = {
   allowClose?: boolean
@@ -11,7 +13,7 @@ type Props = {
 
 @inject('authModalStore')
 @observer
-export class AuthModal extends Component<Props> {
+export class AuthModal extends Taro.Component<Props> {
   get isUserInfoVisible() {
     return this.props.authModalStore.isUserInfoVisible
   }
@@ -28,17 +30,21 @@ export class AuthModal extends Component<Props> {
   }
 
   render() {
-    return (
-      <AtCurtain isOpened={this.isUserInfoVisible} onClose={this.onClose}>
-        <AtButton
-          onGetUserInfo={this.onGetUserInfo}
-          openType="getUserInfo"
-          className="user-info-auth-button"
-          type="primary"
-        >
-          授权
-        </AtButton>
-      </AtCurtain>
-    )
+    if (config.isWechatBuild) {
+      return (
+        <AtCurtain isOpened={this.isUserInfoVisible} onClose={this.onClose}>
+          <AtButton
+            onGetUserInfo={this.onGetUserInfo}
+            openType="getUserInfo"
+            className="user-info-auth-button"
+            type="primary"
+          >
+            授权
+          </AtButton>
+        </AtCurtain>
+      )
+    } else {
+      return <View />
+    }
   }
 }

@@ -19,6 +19,8 @@ let allStore: any = null
 export const getStore = <T extends keyof StoreWithAuth>(
   storeName: T,
 ): StoreWithAuth[T] => {
+  if (!getMobxStore) throw 'no getStore in mobx'
+
   if (!allStore) {
     allStore = getMobxStore()
   }

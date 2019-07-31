@@ -1,6 +1,7 @@
 import Taro from '@tarojs/taro'
 import { getStore } from '../store'
 import { request } from '../util/request'
+import { Catch } from './catch'
 
 const action = {
   /*
@@ -50,4 +51,4 @@ const action = {
   },
 }
 
-export const UserAction = action
+export const UserAction = Catch(action)

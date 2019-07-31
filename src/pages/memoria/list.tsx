@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro'
 import { View, Image, Text, Button, ScrollView } from '@tarojs/components'
 import { request } from '../../util/request'
 import { path } from '../../util/path'
-import { Component, Config, observer } from '../util/component'
+import { Connected, Config, observer, inject } from '../../util/component'
 import { AuthModal } from '../../components/authModal/index'
 import {
   AtCard,
@@ -25,8 +25,10 @@ type State = {
   isTagSearchModalVisible: boolean
 }
 
+@inject('userStore')
+@inject('memoriaStore')
 @observer
-class MemoriaList extends Component<Props, State> {
+class MemoriaList extends Connected<Props, State> {
   config: Config = {
     navigationBarTitleText: 'memorias',
     enablePullDownRefresh: true,

@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { request } from '../../util/request'
 import { path } from '../../util/path'
-import { Component, Config, observer } from '../util/component'
+import { Connected, Config, observer, inject } from '../../util/component'
 import { AtCard, AtButton } from 'taro-ui'
 import '../memoria/list.scss'
 
@@ -12,8 +12,10 @@ type State = {
   memorias: SearchMemoriaRes['memorias']
 }
 
+@inject('userStore')
+@inject('memoriaStore')
 @observer
-class Individual extends Component<Props, State> {
+class Individual extends Connected<Props, State> {
   config: Config = {
     navigationBarTitleText: 'memorias',
     enablePullDownRefresh: true,

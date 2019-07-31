@@ -1,6 +1,7 @@
 import { redirectTo, navigateTo } from '@tarojs/taro'
 import { stringify } from 'querystring'
 import { getStore } from '../store'
+import { config } from '../config'
 
 const _path = {
   home: ('/pages/memoria/list' as any) as PathGoMethod,
@@ -22,7 +23,7 @@ type PathGoMethod = {
 function pathGo(url: string, param: any, isGo?: boolean, isRedirect?: boolean) {
   const goTo = isRedirect ? redirectTo : navigateTo
   const path = { url: addUrlParam(url, param) }
-  if (isGo) {
+  if (isGo && config.isWechatBuild) {
     const userStore = getStore('userStore')
     const authModalStore = getStore('authModalStore')
     if (userStore.isLogon) {

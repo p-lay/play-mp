@@ -2,7 +2,7 @@ import './index.scss'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { request } from '../../util/request'
-import { Component, Config, observer } from '../util/component'
+import { Connected, Config, observer, inject } from '../../util/component'
 import {
   AtSearchBar,
   AtTag,
@@ -26,8 +26,10 @@ type State = {
   newTagNameStr: string
 }
 
+@inject('userStore')
+@inject('memoriaStore')
 @observer
-class TagManagement extends Component<Props, State> {
+class TagManagement extends Connected<Props, State> {
   config: Config = {
     navigationBarTitleText: 'Tag Management',
     enablePullDownRefresh: true,

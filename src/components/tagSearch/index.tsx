@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtSearchBar, AtTag } from 'taro-ui'
-import { Component, observer, inject } from '../../pages/util/component'
+import { Connected, observer, inject } from '../../util/component'
 import './index.scss'
 import { request } from '../../util/request'
 
@@ -16,8 +16,7 @@ type State = {
   selectedIds: number[]
 }
 
-@observer
-export class TagSearch extends Component<Props, State> {
+export class TagSearch extends Connected<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {

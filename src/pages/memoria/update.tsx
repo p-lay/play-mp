@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro'
 import { View, Text, Input, Textarea, Video } from '@tarojs/components'
 import { request } from '../../util/request'
 import { uploadFiles } from '../../util/qiniu'
-import { Component, Config, observer } from '../util/component'
+import { Connected, Config, observer, inject } from '../../util/component'
 import { path } from '../../util/path'
 import { AtCalendar, AtImagePicker, AtButton, AtSwitch } from 'taro-ui'
 import { getStrictDisplayTime, getUnix } from '../../util/dayjs'
@@ -26,8 +26,10 @@ type State = {
 } & BaseMemoria &
   Partial<MemoriaAppendInfo>
 
+@inject('userStore')
+@inject('memoriaStore')
 @observer
-class MemoriaUpdate extends Component<Props, State> {
+class MemoriaUpdate extends Connected<Props, State> {
   config: Config = {
     navigationBarTitleText: 'create & edit',
   }

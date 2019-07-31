@@ -1,7 +1,7 @@
 import { inject as mobxInject, observer as mobxObserver } from '@tarojs/mobx'
 import { Component as TaroComponent, Config as TaroConfig } from '@tarojs/taro'
-import { Store } from '../../store'
-import { path } from '../../util/path'
+import { Store } from '../store'
+import { path } from './path'
 
 export const inject = mobxInject
 export const observer = mobxObserver
@@ -11,9 +11,7 @@ export type Config = TaroConfig & {
   shareUrl?: string
 }
 
-@inject('userStore')
-@inject('memoriaStore')
-export class Component<Props = {}, State = {}> extends TaroComponent<
+export class Connected<Props = {}, State = {}> extends TaroComponent<
   Props & Store,
   State
 > {
