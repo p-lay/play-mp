@@ -125,7 +125,7 @@ export class TagSearch extends Component<Props, State> {
               type="primary"
               onClick={this.onTagSelect.bind(this, tag.id)}
               active={selectedIds.includes(tag.id)}
-              className="tag"
+              className="tagSearchItem"
             >
               {tag.name}
             </AtTag>
