@@ -1,12 +1,16 @@
-import './update.scss'
+import './index.scss'
 import Taro from '@tarojs/taro'
-import { View, Text, Image, Video } from '@tarojs/components'
-import { request } from '../../util/request'
-import { path } from '../../util/path'
-import { Component, Config, observer } from '../util/component'
-import { AuthModal } from '../../components/authModal'
-import { getDisplayTime } from '../../util/dayjs'
+import {
+  View,
+  Text,
+} from '@tarojs/components'
+import { request } from '@u/request'
+import { path } from '@u/path'
+import { Component, Config, observer } from '../../util/component'
+import { AuthModal } from '@c/authModal'
+import { getDisplayTime } from '@u/dayjs'
 import { AtFab } from 'taro-ui'
+import { PhotoViewer } from '@c/photoViewer/index'
 
 type Props = {}
 
@@ -55,19 +59,6 @@ class MemoriaDetail extends Component<Props, State> {
     }))
   }
 
-  videoContext: Taro.VideoContext = null
-  onVideoPlay = (id: string) => {
-    this.videoContext = Taro.createVideoContext(id, this)
-    this.videoContext.requestFullScreen({ direction: 0 })
-  }
-
-  onVideoFullscreenChange = ({ detail }) => {
-    const { fullScreen } = detail
-    if (!fullScreen) {
-      this.videoContext.pause()
-    }
-  }
-
   componentDidMount() {
     request('getMemoria', { id: this.memoriaId }).then(res => {
       this.memoriaStore.setRes(res)
@@ -85,10 +76,6 @@ class MemoriaDetail extends Component<Props, State> {
     })
   }
 
-  componentWillUnmount() {
-    this.videoContext = null
-  }
-
   render() {
     const {
       title,
@@ -100,10 +87,10 @@ class MemoriaDetail extends Component<Props, State> {
       tags,
     } = this.state
     return (
-      <View className="memoriaUpdate">
+      <View className="memoriaDetail">
         <AuthModal />
 
-        <View className="title detail">{title}</View>
+        <View className="title">{title}</View>
 
         <View className="feeling">{feeling}</View>
 
@@ -115,30 +102,9 @@ class MemoriaDetail extends Component<Props, State> {
           <Text className="text">{createTime}</Text>
         </View>
 
-        <View className="photoContainer">
-          {resources.map(x => {
-            const isVideo = x.type == 'video'
-            const idStr = x.id.toString()
-            return (
-              <View>
-                {isVideo && (
-                  <Video
-                    src={x.url}
-                    enableDanmu={true}
-                    danmuBtn={true}
-                    id={idStr}
-                    onPlay={this.onVideoPlay.bind(this, idStr)}
-                    playBtnPosition="center"
-                    onFullscreenChange={this.onVideoFullscreenChange}
-                  />
-                )}
-                {!isVideo && (
-                  <Image src={x.url} className="photo" mode="aspectFill" />
-                )}
-              </View>
-            )
-          })}
-        </View>
+        <View className="at-fab__icon at-icon at-icon-image"></View>
+        <PhotoViewer photos={resources} />
+
         {create_by == this.userId && (
           <View className="fabBtn">
             <AtFab onClick={this.onFabClick}>

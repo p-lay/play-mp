@@ -1,0 +1,51 @@
+.memoriaDetail {
+  margin: 0 auto;
+  width: 640px;
+  padding-bottom: 160px;
+
+  .title {
+    margin-bottom: 20px;
+    font-size: 40px;
+  }
+  .feeling {
+    margin-bottom: 20px;
+  }
+  .time {
+    margin-bottom: 20px;
+    display: block;
+    .text {
+      margin-left: 10px;
+    }
+  }
+  .tagDisplay {
+    margin-bottom: 20px;
+    .text {
+      margin-left: 10px;
+    }
+  }
+  .at-icon-image {
+    margin-bottom: -2px;
+    font-size: 35px;
+  }
+  .at-icon-file-video {
+    font-size: 100px;
+    margin-left: 20px;
+  }
+  .saveBtn {
+    margin-top: 20px;
+  }
+
+  .fabBtn {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    &.topBtn {
+      right: 20px;
+      bottom: 150px;
+    }
+    &.leftBtn {
+      right: 150px;
+      bottom: 30px;
+    }
+  }
+}

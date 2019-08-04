@@ -1,0 +1,41 @@
+.photoViewer {
+  .fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    visibility: hidden;
+    z-index: 2000;
+    &.visible {
+      visibility: visible;
+    }
+
+    swiper {
+      height: 100%;
+    }
+    .resource {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .preview {
+    &.hidden {
+      visibility: hidden;
+    }
+    .photoItem {
+      width: 159px;
+      height: 159px;
+      display: inline-block;
+      margin-top: -8px;
+      margin-right: 2px;
+
+      .resource {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}

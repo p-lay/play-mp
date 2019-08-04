@@ -1,3 +1,5 @@
+const path = require("path")
+
 const config = {
   projectName: 'play-mp',
   date: '2019-6-29',
@@ -26,6 +28,12 @@ const config = {
         'transform-object-rest-spread',
       ],
     },
+  },
+  alias: {
+    "@": path.resolve(__dirname, "..", "src"),
+    "@c": path.resolve(__dirname, "..", "src/components"),
+    "@p": path.resolve(__dirname, "..", "src/pages"),
+    "@u": path.resolve(__dirname, "..", "src/util")
   },
   defineConstants: {},
   copy: {

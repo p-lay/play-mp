@@ -20,7 +20,7 @@ class App extends Component {
       'pages/memoria/list',
       'pages/index/index',
       'pages/memoria/update',
-      'pages/memoria/detail',
+      'pages/memoria/detail/index',
       'pages/individual/index',
       'pages/tagManagement/index'
     ],

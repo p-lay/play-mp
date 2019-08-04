@@ -6,7 +6,7 @@ const _path = {
   home: ('/pages/memoria/list' as any) as PathGoMethod,
   memoria: {
     update: ('/pages/memoria/update' as any) as PathGoMethod,
-    detail: ('/pages/memoria/detail' as any) as PathGoMethod,
+    detail: ('/pages/memoria/detail/index' as any) as PathGoMethod,
     list: ('/pages/memoria/list' as any) as PathGoMethod,
   },
   individual: ('/pages/individual/index' as any) as PathGoMethod,

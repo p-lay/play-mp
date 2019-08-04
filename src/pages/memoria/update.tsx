@@ -246,16 +246,16 @@ class MemoriaUpdate extends Component<Props, State> {
         <Input
           onInput={this.onTitleChange}
           value={title}
-          className="title update"
+          className="title"
         />
         <Text>想法</Text>
         <Textarea
           onInput={this.onFeelingChange}
           value={feeling}
-          className="feeling update"
+          className="feeling"
         />
         <View className="at-icon at-icon-tag">标签</View>
-        <View className="tagDisplay update">
+        <View className="tagDisplay">
           <TagSearch
             defaultSelectedIds={tags.map(x => x.id)}
             ref={this.getTagSearch}

@@ -9,38 +9,19 @@
 
   .title {
     margin-bottom: 20px;
-    &.update {
-      border: 1px solid black;
-      display: flex;
-      align-items: center;
-      padding: 10px;
-    }
-    &.detail {
-      font-size: 40px;
-    }
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    padding: 10px;
   }
   .feeling {
     margin-bottom: 20px;
-    &.update {
-      min-height: 400px;
-      border: 1px solid black;
-    }
-  }
-  .time {
-    margin-bottom: 20px;
-    display: block;
-    .text {
-      margin-left: 10px;
-    }
+    min-height: 400px;
+    border: 1px solid black;
   }
   .tagDisplay {
     margin-bottom: 20px;
-    &.update {
-      border: 1px solid black;
-    }
-    .text {
-      margin-left: 10px;
-    }
+    border: 1px solid black;
   }
   .dateDisplay {
     display: flex;
