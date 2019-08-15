@@ -22,43 +22,68 @@ export class PhotoViewer extends Component<Props, State> {
     }
   }
 
-  videoContext: Taro.VideoContext = null
-  onVideoPlay = (id: string) => {
-    this.videoContext = Taro.createVideoContext(id, this)
-    this.videoContext.requestFullScreen({ direction: 0 })
+  static defaultProps = {
+    photos: [],
+  }
+
+  onVideoPlay = (idStr: string) => {
+    this.videoContext = Taro.createVideoContext(idStr, this)
   }
 
   onVideoFullscreenChange = ({ detail }) => {
-    const { fullScreen } = detail
-    if (!fullScreen) {
-      this.videoContext.pause()
+    console.log('on fullscreen')
+    // const { fullScreen } = detail
+    // if (!fullScreen) {
+    //   this.videoContext.pause()
+    // }
+  }
+
+  videoContext: Taro.VideoContext = null
+  onOpenView = (photo: BaseResource, index: number) => {
+    this.setState(
+      {
+        isFullscreen: true,
+        viewIndex: index,
+      },
+      () => {
+        if (photo.type == 'video') {
+          this.videoContext = Taro.createVideoContext(photo.id.toString(), this)
+          this.videoContext.play()
+        }
+      },
+    )
+  }
+
+  onCloseView = () => {
+    const { photos } = this.props
+    const { viewIndex } = this.state
+    const current = photos.find((x, index) => index == viewIndex)
+    if (current.type == 'video') {
+      this.videoContext && this.videoContext.pause()
     }
-  }
-
-  onPhotoView = (index: number) => {
-    this.setState({
-      isFullscreen: true,
-      viewIndex: index,
-    })
-  }
-
-  onCancelView = () => {
     this.setState({
       isFullscreen: false,
     })
   }
 
-  componentWillUnmount() {
-    this.videoContext = null
+  onViewChange = ({ detail }) => {
+    this.setState({
+      viewIndex: detail.current,
+    })
+
+    this.videoContext && this.videoContext.pause()
   }
 
   render() {
-    const { photos = [] } = this.props
+    const { photos } = this.props
     const { isFullscreen, viewIndex } = this.state
     return (
       <View className="photoViewer">
+        {isFullscreen && (
+          <View className="closeBtn" onClick={this.onCloseView} />
+        )}
         <View className={`fullscreen ${isFullscreen && 'visible'}`}>
-          <Swiper onClick={this.onCancelView} current={viewIndex}>
+          <Swiper current={viewIndex} onChange={this.onViewChange} duration={200}>
             {photos.map(x => {
               const isVideo = x.type == 'video'
               const idStr = x.id.toString()
@@ -88,22 +113,17 @@ export class PhotoViewer extends Component<Props, State> {
         <View className="preview">
           {photos.map((x, index) => {
             const isVideo = x.type == 'video'
-            const idStr = x.id.toString()
             return (
               <View
                 className="photoItem"
-                onClick={this.onPhotoView.bind(this, index)}
+                onClick={this.onOpenView.bind(this, x, index)}
               >
                 {isVideo && (
                   <Video
                     src={x.url}
-                    enableDanmu={true}
-                    danmuBtn={true}
-                    id={idStr}
-                    onPlay={this.onVideoPlay.bind(this, idStr)}
-                    playBtnPosition="center"
-                    onFullscreenChange={this.onVideoFullscreenChange}
-                    className="resource"
+                    className="resource previewVideo"
+                    showFullscreenBtn={false}
+                    showPlayBtn={false}
                   />
                 )}
                 {!isVideo && (

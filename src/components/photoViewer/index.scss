@@ -1,4 +1,14 @@
 .photoViewer {
+  .closeBtn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    z-index: 2001;
+    background: grey;
+  }
+
   .fullscreen {
     position: fixed;
     top: 0;
@@ -35,6 +45,13 @@
       .resource {
         width: 100%;
         height: 100%;
+        &.previewVideo {
+          pointer-events: none;
+
+          .videoInner {
+            height: 100%;
+          }
+        }
       }
     }
   }
