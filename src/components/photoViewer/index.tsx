@@ -26,18 +26,6 @@ export class PhotoViewer extends Component<Props, State> {
     photos: [],
   }
 
-  onVideoPlay = (idStr: string) => {
-    this.videoContext = Taro.createVideoContext(idStr, this)
-  }
-
-  onVideoFullscreenChange = ({ detail }) => {
-    console.log('on fullscreen')
-    // const { fullScreen } = detail
-    // if (!fullScreen) {
-    //   this.videoContext.pause()
-    // }
-  }
-
   videoContext: Taro.VideoContext = null
   onOpenView = (photo: BaseResource, index: number) => {
     this.setState(
@@ -67,11 +55,18 @@ export class PhotoViewer extends Component<Props, State> {
   }
 
   onViewChange = ({ detail }) => {
+    const { photos } = this.props
     this.setState({
       viewIndex: detail.current,
     })
 
     this.videoContext && this.videoContext.pause()
+
+    const current = photos.find((x, index) => index == detail.current)
+    if (current.type == 'video') {
+      this.videoContext = Taro.createVideoContext(current.id.toString(), this)
+      this.videoContext.play()
+    }
   }
 
   render() {
@@ -82,33 +77,42 @@ export class PhotoViewer extends Component<Props, State> {
         {isFullscreen && (
           <View className="closeBtn" onClick={this.onCloseView} />
         )}
-        <View className={`fullscreen ${isFullscreen && 'visible'}`}>
-          <Swiper current={viewIndex} onChange={this.onViewChange} duration={200}>
-            {photos.map(x => {
-              const isVideo = x.type == 'video'
-              const idStr = x.id.toString()
-              return (
-                <SwiperItem>
-                  {isVideo && (
-                    <Video
-                      src={x.url}
-                      enableDanmu={true}
-                      danmuBtn={true}
-                      id={idStr}
-                      onPlay={this.onVideoPlay.bind(this, idStr)}
-                      playBtnPosition="center"
-                      onFullscreenChange={this.onVideoFullscreenChange}
-                      className="resource"
-                    />
-                  )}
-                  {!isVideo && (
-                    <Image src={x.url} className="resource" mode="aspectFit" />
-                  )}
-                </SwiperItem>
-              )
-            })}
-          </Swiper>
-        </View>
+        {isFullscreen && (
+          <View className="fullscreen">
+            <Swiper
+              current={viewIndex}
+              onChange={this.onViewChange}
+              duration={200}
+            >
+              {photos.map(x => {
+                const isVideo = x.type == 'video'
+                const idStr = x.id.toString()
+                return (
+                  <SwiperItem>
+                    {isVideo && (
+                      <Video
+                        src={x.url}
+                        enableDanmu={true}
+                        danmuBtn={true}
+                        id={idStr}
+                        playBtnPosition="center"
+                        className="resource"
+                        autoplay={false}
+                      />
+                    )}
+                    {!isVideo && (
+                      <Image
+                        src={x.url}
+                        className="resource"
+                        mode="aspectFit"
+                      />
+                    )}
+                  </SwiperItem>
+                )
+              })}
+            </Swiper>
+          </View>
+        )}
 
         <View className="preview">
           {photos.map((x, index) => {
@@ -124,6 +128,7 @@ export class PhotoViewer extends Component<Props, State> {
                     className="resource previewVideo"
                     showFullscreenBtn={false}
                     showPlayBtn={false}
+                    autoplay={false}
                   />
                 )}
                 {!isVideo && (

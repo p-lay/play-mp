@@ -15,6 +15,7 @@ import {
 } from 'taro-ui'
 import { getDisplayTime } from '../../util/dayjs'
 import { TagSearch } from '../../components/tagSearch/index'
+import { config } from '@/config'
 
 type Props = {}
 
@@ -219,7 +220,11 @@ class MemoriaList extends Component<Props, State> {
                 extra={getDisplayTime(x.createTime)}
               >
                 <View className="cardContent">
-                  <Image src={x.thumb} className="image" mode="aspectFill" />
+                  <Image
+                    src={x.thumb || config.defaultThumb}
+                    className="image"
+                    mode="aspectFill"
+                  />
                   <View className="feeling">{x.feeling}</View>
                   <View className="icon">
                     {x.isLargeData && (

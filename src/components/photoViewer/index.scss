@@ -16,11 +16,7 @@
     width: 100vw;
     height: 100vh;
     background: black;
-    visibility: hidden;
     z-index: 2000;
-    &.visible {
-      visibility: visible;
-    }
 
     swiper {
       height: 100%;
