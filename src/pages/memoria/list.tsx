@@ -83,6 +83,13 @@ class MemoriaList extends Component<Props, State> {
     })
   }
 
+  onGoExpressTask = () => {
+    this.setState({
+      isGoPageModalVisible: false,
+    })
+    path.expressTask.navigate()
+  }
+
   onGoCreateMemoria = () => {
     this.setState({
       isActionVisible: false,
@@ -253,6 +260,13 @@ class MemoriaList extends Component<Props, State> {
             <Text className="at-fab__icon at-icon at-icon-menu"></Text>
           </AtFab>
         </View>
+        {isActionVisible && (
+          <View className="fabBtn expressTaskBtn">
+            <AtFab onClick={this.onGoExpressTask}>
+              <Text className="at-fab__icon at-icon at-icon-message"></Text>
+            </AtFab>
+          </View>
+        )}
         {isActionVisible && (
           <View className="fabBtn topBtn">
             <AtFab onClick={this.onGoCreateMemoria}>

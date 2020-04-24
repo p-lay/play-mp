@@ -57,6 +57,10 @@
     position: fixed;
     right: 20px;
     bottom: 20px;
+    &.expressTaskBtn {
+      right: 20px;
+      bottom: 270px;
+    }
     &.topBtn {
       right: 20px;
       bottom: 150px;
