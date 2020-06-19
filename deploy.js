@@ -4,8 +4,8 @@ const request = require('request')
 const util = require('util')
 
 const config = {
-  getVersionUrl: 'https://version.matthew5.cn/mp-version',
-  setVersionUrl: 'https://version.matthew5.cn/mp-version/update',
+  getVersionUrl: 'https://play-version.matthew5.cn/mp-version',
+  setVersionUrl: 'https://play-version.matthew5.cn/mp-version/update',
   sitEnv: 'SIT',
   sitBuildCommand: 'npm run build:sit',
   prodEnv: 'PROD',
