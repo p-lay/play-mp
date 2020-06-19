@@ -1,4 +1,4 @@
-const path = require("path")
+const path = require('path')
 
 const config = {
   projectName: 'play-mp',
@@ -30,10 +30,10 @@ const config = {
     },
   },
   alias: {
-    "@": path.resolve(__dirname, "..", "src"),
-    "@c": path.resolve(__dirname, "..", "src/components"),
-    "@p": path.resolve(__dirname, "..", "src/pages"),
-    "@u": path.resolve(__dirname, "..", "src/util")
+    '@': path.resolve(__dirname, '..', 'src'),
+    '@c': path.resolve(__dirname, '..', 'src/components'),
+    '@p': path.resolve(__dirname, '..', 'src/pages'),
+    '@u': path.resolve(__dirname, '..', 'src/util'),
   },
   defineConstants: {},
   copy: {
@@ -95,8 +95,7 @@ const config = {
 module.exports = function(merge) {
   if (process.env.NODE_ENV === 'LOCAL') {
     return merge({}, config, require('./local'))
-  } else if (process.env.NODE_ENV === 'SIT') {
-    return merge({}, config, require('./sit'))
   }
+
   return merge({}, config, require('./prod'))
 }
