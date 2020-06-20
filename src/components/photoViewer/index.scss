@@ -37,16 +37,19 @@
       display: inline-block;
       margin-top: -8px;
       margin-right: 2px;
+      position: relative;
 
       .resource {
         width: 100%;
         height: 100%;
         &.previewVideo {
-          pointer-events: none;
-
-          .videoInner {
-            height: 100%;
-          }
+          position: absolute;
+          top: 0;
+          color: #ffffff;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
         }
       }
     }

@@ -2,6 +2,7 @@ import './index.scss'
 import Taro from '@tarojs/taro'
 import { View, Video, Image, Swiper, SwiperItem } from '@tarojs/components'
 import { Component, observer } from '@p/util/component'
+import { AtIcon } from 'taro-ui'
 
 type Props = {
   photos: BaseResource[]
@@ -122,17 +123,12 @@ export class PhotoViewer extends Component<Props, State> {
                 className="photoItem"
                 onClick={this.onOpenView.bind(this, x, index)}
               >
+                <Image src={x.thumb} className="resource" mode="aspectFill" />
                 {isVideo && (
-                  <Video
-                    src={x.url}
-                    className="resource previewVideo"
-                    showFullscreenBtn={false}
-                    showPlayBtn={false}
-                    autoplay={false}
-                  />
-                )}
-                {!isVideo && (
-                  <Image src={x.url} className="resource" mode="aspectFill" />
+                  <View className="resource previewVideo">
+                    <AtIcon value="play" size={40} />
+                    {x.duration}s
+                  </View>
                 )}
               </View>
             )
