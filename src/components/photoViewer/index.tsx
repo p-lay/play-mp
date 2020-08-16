@@ -3,9 +3,11 @@ import Taro from '@tarojs/taro'
 import { View, Video, Image, Swiper, SwiperItem } from '@tarojs/components'
 import { Component, observer } from '@p/util/component'
 import { AtIcon } from 'taro-ui'
+import { debounce } from 'lodash'
 
 type Props = {
   photos: BaseResource[]
+  defaultOpenIndex?: number
 }
 
 type State = {
@@ -55,6 +57,28 @@ export class PhotoViewer extends Component<Props, State> {
     })
   }
 
+  startTouchedClientY = 0
+  endTouchedClientY = 0
+  onSwiperTouchMove = debounce(() => {
+    const value = this.endTouchedClientY - this.startTouchedClientY
+    if (value < -50) {
+      // 上滑
+      Taro.navigateBack()
+    } else if (value > 50) {
+      this.onCloseView()
+    }
+    this.startTouchedClientY = 0
+    this.endTouchedClientY = 0
+  }, 200)
+
+  onSwiperTouchStart = event => {
+    this.startTouchedClientY = event.changedTouches[0].clientY
+  }
+
+  onSwiperTouchEnd = event => {
+    this.endTouchedClientY = event.changedTouches[0].clientY
+  }
+
   onViewChange = ({ detail }) => {
     const { photos } = this.props
     this.setState({
@@ -70,20 +94,31 @@ export class PhotoViewer extends Component<Props, State> {
     }
   }
 
+  componentDidMount() {
+    const { defaultOpenIndex, photos } = this.props
+    if (defaultOpenIndex != null) {
+      setTimeout(() => {
+        const currentPhoto = photos[defaultOpenIndex]
+        this.onOpenView(currentPhoto, defaultOpenIndex)
+      })
+    }
+  }
+
   render() {
     const { photos } = this.props
     const { isFullscreen, viewIndex } = this.state
     return (
       <View className="photoViewer">
-        {isFullscreen && (
-          <View className="closeBtn" onClick={this.onCloseView} />
-        )}
+        {isFullscreen && <View className="closeBtn">上下滑动关闭</View>}
         {isFullscreen && (
           <View className="fullscreen">
             <Swiper
               current={viewIndex}
               onChange={this.onViewChange}
               duration={200}
+              onTouchStart={this.onSwiperTouchStart}
+              onTouchEnd={this.onSwiperTouchEnd}
+              onTouchMove={this.onSwiperTouchMove}
             >
               {photos.map(x => {
                 const isVideo = x.type == 'video'

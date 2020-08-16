@@ -29,7 +29,7 @@ type State = {
 @observer
 class MemoriaUpdate extends Component<Props, State> {
   config: Config = {
-    navigationBarTitleText: 'create & edit',
+    navigationBarTitleText: '修改',
   }
 
   state: State = {
@@ -212,6 +212,8 @@ class MemoriaUpdate extends Component<Props, State> {
         id: this.memoriaId,
       })
       state = res
+    } else {
+      this.config.navigationBarTitleText = '新建'
     }
 
     state.selectDate = getStrictDisplayTime(state.create_time)
@@ -243,11 +245,7 @@ class MemoriaUpdate extends Component<Props, State> {
     return (
       <View className="memoriaUpdate">
         <Text>标题</Text>
-        <Input
-          onInput={this.onTitleChange}
-          value={title}
-          className="title"
-        />
+        <Input onInput={this.onTitleChange} value={title} className="title" />
         <Text>想法</Text>
         <Textarea
           onInput={this.onFeelingChange}

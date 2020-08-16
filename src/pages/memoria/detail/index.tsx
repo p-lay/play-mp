@@ -1,9 +1,6 @@
 import './index.scss'
 import Taro from '@tarojs/taro'
-import {
-  View,
-  Text,
-} from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import { request } from '@u/request'
 import { path } from '@u/path'
 import { Component, Config, observer } from '../../util/component'
@@ -23,7 +20,7 @@ type State = {
 @observer
 class MemoriaDetail extends Component<Props, State> {
   config: Config = {
-    navigationBarTitleText: 'memoria',
+    navigationBarTitleText: '相册',
   }
 
   state: State = {
@@ -103,7 +100,7 @@ class MemoriaDetail extends Component<Props, State> {
         </View>
 
         <View className="at-fab__icon at-icon at-icon-image"></View>
-        <PhotoViewer photos={resources} />
+        <PhotoViewer photos={resources} defaultOpenIndex={0} />
 
         {create_by == this.userId && (
           <View className="fabBtn">

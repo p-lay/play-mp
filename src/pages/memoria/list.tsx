@@ -29,7 +29,7 @@ type State = {
 @observer
 class MemoriaList extends Component<Props, State> {
   config: Config = {
-    navigationBarTitleText: 'memorias',
+    navigationBarTitleText: '屁蕾相册',
     enablePullDownRefresh: true,
   }
 
@@ -101,7 +101,8 @@ class MemoriaList extends Component<Props, State> {
     this.setState({
       isActionVisible: false,
     })
-    path.individual.navigate()
+    path.tagManagement.navigate()
+    //path.individual.navigate()
   }
 
   onFabClick = () => {
@@ -145,6 +146,9 @@ class MemoriaList extends Component<Props, State> {
   }
 
   async fetchData() {
+    Taro.showLoading({
+      title: '加载中...',
+    })
     await request('searchMemoria', {
       tag_ids: this.confirmedTagIds,
     }).then(res => {
@@ -152,15 +156,12 @@ class MemoriaList extends Component<Props, State> {
         memorias: res.memorias,
       })
     })
+    Taro.hideLoading()
   }
 
   async onPullDownRefresh() {
-    Taro.showLoading({
-      title: '加载中...',
-    })
     await this.fetchData()
     Taro.stopPullDownRefresh()
-    Taro.hideLoading()
   }
 
   componentDidMount() {
@@ -211,7 +212,7 @@ class MemoriaList extends Component<Props, State> {
           >
             标签搜索
           </AtButton>
-          <Text className="count">{`memorias: ${memorias.length}`}</Text>
+          <Text className="count">{`posts: ${memorias.length}`}</Text>
         </View>
 
         <ScrollView className="body" scrollY={true}>
