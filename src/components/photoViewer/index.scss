@@ -55,3 +55,30 @@
     }
   }
 }
+
+.downloadBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 2001;
+  opacity: 0.5;
+  color: white;
+  &.loading {
+    animation: circle 0.8s infinite;
+  }
+
+  @keyframes circle {
+    25% {
+      transform: rotate(90deg);
+    }
+    50% {
+      transform: rotate(180deg);
+    }
+    75% {
+      transform: rotate(270deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}

@@ -38,7 +38,7 @@ type State = {
 @observer
 class ExpressTaskPage extends Component<Props, State> {
   config: Config = {
-    navigationBarTitleText: 'Express Task',
+    navigationBarTitleText: '屁蕾果果',
     enablePullDownRefresh: true,
   }
 

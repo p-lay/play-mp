@@ -7,7 +7,7 @@ import { Component, Config, observer } from '../../util/component'
 import { AuthModal } from '@c/authModal'
 import { getDisplayTime } from '@u/dayjs'
 import { AtFab } from 'taro-ui'
-import { PhotoViewer } from '@c/photoViewer/index'
+import PhotoViewer from '@c/photoViewer/index'
 
 type Props = {}
 
@@ -100,7 +100,9 @@ class MemoriaDetail extends Component<Props, State> {
         </View>
 
         <View className="at-fab__icon at-icon at-icon-image"></View>
-        <PhotoViewer photos={resources} defaultOpenIndex={0} />
+        {resources.length && (
+          <PhotoViewer photos={resources} defaultOpenIndex={0} />
+        )}
 
         {create_by == this.userId && (
           <View className="fabBtn">

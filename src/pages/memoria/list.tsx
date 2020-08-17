@@ -29,7 +29,7 @@ type State = {
 @observer
 class MemoriaList extends Component<Props, State> {
   config: Config = {
-    navigationBarTitleText: '屁蕾相册',
+    navigationBarTitleText: '屁蕾看看',
     enablePullDownRefresh: true,
   }
 

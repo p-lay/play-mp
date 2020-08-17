@@ -4,6 +4,7 @@ import { View, Video, Image, Swiper, SwiperItem } from '@tarojs/components'
 import { Component, observer } from '@p/util/component'
 import { AtIcon } from 'taro-ui'
 import { debounce } from 'lodash'
+import cns from 'classnames'
 
 type Props = {
   photos: BaseResource[]
@@ -13,15 +14,17 @@ type Props = {
 type State = {
   isFullscreen: boolean
   viewIndex: number
+  isDownloading: boolean
 }
 
 @observer
-export class PhotoViewer extends Component<Props, State> {
+class PhotoViewer extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
       isFullscreen: false,
       viewIndex: 0,
+      isDownloading: false,
     }
   }
 
@@ -94,6 +97,44 @@ export class PhotoViewer extends Component<Props, State> {
     }
   }
 
+  onDownloadFile = () => {
+    this.setState({
+      isDownloading: true,
+    })
+    const { photos } = this.props
+    const { viewIndex } = this.state
+    const current = photos.find((x, index) => index == viewIndex)
+    Taro.downloadFile({
+      url: current.url,
+      success: res => {
+        if (current.type === 'video') {
+          Taro.saveVideoToPhotosAlbum({
+            filePath: res.tempFilePath,
+            success: () => {
+              Taro.showToast({ title: '下载成功' })
+            },
+          } as any)
+        } else {
+          Taro.saveImageToPhotosAlbum({
+            filePath: res.tempFilePath,
+            success: () => {
+              Taro.showToast({ title: '下载成功' })
+            },
+          } as any)
+        }
+        this.setState({
+          isDownloading: false,
+        })
+      },
+      fail: err => {
+        Taro.showToast({ title: '下载失败' })
+        this.setState({
+          isDownloading: false,
+        })
+      },
+    })
+  }
+
   componentDidMount() {
     const { defaultOpenIndex, photos } = this.props
     if (defaultOpenIndex != null) {
@@ -106,10 +147,20 @@ export class PhotoViewer extends Component<Props, State> {
 
   render() {
     const { photos } = this.props
-    const { isFullscreen, viewIndex } = this.state
+    const { isFullscreen, viewIndex, isDownloading } = this.state
     return (
       <View className="photoViewer">
         {isFullscreen && <View className="closeBtn">上下滑动关闭</View>}
+        {isFullscreen && (
+          <View
+            className={cns('downloadBtn', {
+              loading: isDownloading,
+            })}
+            onClick={this.onDownloadFile}
+          >
+            <AtIcon value={isDownloading ? 'loading' : 'download'} size={30} />
+          </View>
+        )}
         {isFullscreen && (
           <View className="fullscreen">
             <Swiper
@@ -129,11 +180,12 @@ export class PhotoViewer extends Component<Props, State> {
                       <Video
                         src={x.url}
                         enableDanmu={true}
-                        danmuBtn={true}
+                        danmuBtn={false}
                         id={idStr}
                         playBtnPosition="center"
                         className="resource"
                         autoplay={false}
+                        showFullscreenBtn={false}
                       />
                     )}
                     {!isVideo && (
@@ -173,3 +225,5 @@ export class PhotoViewer extends Component<Props, State> {
     )
   }
 }
+
+export default PhotoViewer
