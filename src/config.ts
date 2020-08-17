@@ -13,3 +13,13 @@ export const config = {
     ? 'http://qiniu-prod.matthew5.cn/defaultThumb'
     : 'http://qiniu.matthew5.cn/defaultThumb',
 }
+
+export const parseDownloadUrl = (url: string) => {
+  if (isProd && url.includes(`http://${config.qiniuDomain}`)) {
+    return url.replace(
+      `http://${config.qiniuDomain}`,
+      `https://${config.qiniuDomain}`,
+    )
+  }
+  return url
+}

@@ -5,6 +5,7 @@ import { Component, observer } from '@p/util/component'
 import { AtIcon } from 'taro-ui'
 import { debounce } from 'lodash'
 import cns from 'classnames'
+import { parseDownloadUrl } from '@/config'
 
 type Props = {
   photos: BaseResource[]
@@ -104,8 +105,9 @@ class PhotoViewer extends Component<Props, State> {
     const { photos } = this.props
     const { viewIndex } = this.state
     const current = photos.find((x, index) => index == viewIndex)
+    const downloadUrl = parseDownloadUrl(current.url)
     Taro.downloadFile({
-      url: current.url,
+      url: downloadUrl,
       success: res => {
         if (current.type === 'video') {
           Taro.saveVideoToPhotosAlbum({
