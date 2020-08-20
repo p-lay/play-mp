@@ -2,6 +2,28 @@
   .inputItem {
     border: 1px solid grey;
     margin: 6px;
-    padding: 2px 6px;
+    .md5Input {
+      font-size: 40px;
+      padding: 10px;
+    }
+  }
+  .avatarWrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    &.used {
+      color: grey;
+    }
+    .avatar {
+      width: 40px;
+      height: 40px;
+      margin-left: 6px;
+    }
+  }
+  .marginTop {
+    margin-top: 100px;
+  }
+  .encryptedMd5 {
+    margin-top: 50px;
   }
 }

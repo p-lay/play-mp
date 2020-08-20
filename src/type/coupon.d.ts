@@ -1,5 +1,11 @@
+interface CouponUser {
+  nickName: string
+  avatarUrl: string
+}
+
 interface EncryptCouponReq {
   message: string
+  user_id: number
 }
 
 interface EncryptCouponRes {
@@ -13,4 +19,14 @@ interface DecryptCouponReq {
 interface DecryptCouponRes {
   message?: string
   decryptFailed?: boolean
+  createdBy?: CouponUser
+  usedBy?: CouponUser
+}
+
+interface UseCouponReq extends DecryptCouponReq {
+  user_id: number
+}
+
+interface UseCouponRes {
+  useFailed?: boolean
 }
