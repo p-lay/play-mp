@@ -16,7 +16,7 @@
   }
   .feeling {
     margin-bottom: 20px;
-    min-height: 400px;
+    min-height: 200px;
     border: 1px solid black;
   }
   .tagDisplay {
@@ -28,6 +28,12 @@
     align-items: center;
     .at-icon-calendar {
       margin-right: 10px;
+    }
+  }
+  .previewImage {
+    padding: 0 10px;
+    .image {
+      width: 100%;
     }
   }
   .photoContainer {
@@ -57,6 +63,12 @@
   .at-icon-file-video {
     font-size: 100px;
     margin-left: 20px;
+  }
+  .at-icon-tag,
+  .at-icon-image {
+    &::before {
+      margin-right: 10px;
+    }
   }
   .saveBtn {
     margin-top: 20px;

@@ -1,6 +1,6 @@
 import './update.scss'
 import Taro from '@tarojs/taro'
-import { View, Text, Input, Textarea, Video } from '@tarojs/components'
+import { View, Text, Input, Textarea, Video, Image } from '@tarojs/components'
 import { request } from '../../util/request'
 import { uploadFiles } from '../../util/qiniu'
 import { Component, Config, observer } from '../util/component'
@@ -8,6 +8,7 @@ import { path } from '../../util/path'
 import { AtCalendar, AtImagePicker, AtButton, AtSwitch } from 'taro-ui'
 import { getStrictDisplayTime, getUnix } from '../../util/dayjs'
 import { TagSearch } from '../../components/tagSearch/index'
+import { config } from '@/config'
 
 type ResourceFiles = {
   url: string
@@ -39,6 +40,7 @@ class MemoriaUpdate extends Component<Props, State> {
     newVideoFiles: [],
     existVideoFiles: [],
     tags: [],
+    thumb: config.defaultThumb,
   } as any
 
   get memoriaId() {
@@ -97,8 +99,31 @@ class MemoriaUpdate extends Component<Props, State> {
     operationType: string,
     index: number,
   ) => {
+    const { thumb } = this.state
     this.setState({
       newImageFiles,
+    })
+    if (
+      !this.isEditPage &&
+      thumb != config.defaultThumb &&
+      newImageFiles.length
+    ) {
+      this.setState({
+        thumb: newImageFiles[0].url,
+      })
+    }
+  }
+
+  setAsPreviewImage = (isExistImage: boolean) => (index: number) => {
+    const { newImageFiles, existImageFiles } = this.state
+    let thumb
+    if (isExistImage) {
+      thumb = existImageFiles[index].url
+    } else {
+      thumb = newImageFiles[index].url
+    }
+    this.setState({
+      thumb,
     })
   }
 
@@ -131,6 +156,7 @@ class MemoriaUpdate extends Component<Props, State> {
       newVideoFiles,
       existVideoFiles,
       isLargeData,
+      thumb,
     } = this.state
     const tagIds = this.tagSearchRef.getSelectedTagIds()
     const tags: Tag[] = tagIds.map(x => ({ id: x, name: '' }))
@@ -150,7 +176,6 @@ class MemoriaUpdate extends Component<Props, State> {
       }
       return result
     })
-    let thumb = ''
     if (this.isEditPage) {
       const existResourceUrls = existImageFiles
         .concat(existVideoFiles)
@@ -158,14 +183,6 @@ class MemoriaUpdate extends Component<Props, State> {
       const resultExistResources = existResources.filter(x =>
         existResourceUrls.includes(x.url),
       )
-      const firstExistImage = resultExistResources.find(x => x.type == 'image')
-      if (firstExistImage) {
-        thumb = firstExistImage.url
-      } else if (resources.length) {
-        const image = (resources.find(x => x.type == 'image') ||
-          {}) as BaseResource
-        thumb = image.url
-      }
 
       await request('updateMemoria', {
         id: this.memoriaId,
@@ -179,11 +196,6 @@ class MemoriaUpdate extends Component<Props, State> {
         isLargeData,
       })
     } else {
-      if (resources.length) {
-        const image = (resources.find(x => x.type == 'image') ||
-          {}) as BaseResource
-        thumb = image.url
-      }
       await request('addMemoria', {
         user_id: this.userId,
         title,
@@ -214,6 +226,7 @@ class MemoriaUpdate extends Component<Props, State> {
       state = res
     } else {
       this.config.navigationBarTitleText = '新建'
+      return
     }
 
     state.selectDate = getStrictDisplayTime(state.create_time)
@@ -240,6 +253,7 @@ class MemoriaUpdate extends Component<Props, State> {
       isCalendarVisible,
       isLargeData,
       tags,
+      thumb,
     } = this.state
 
     return (
@@ -278,18 +292,25 @@ class MemoriaUpdate extends Component<Props, State> {
           border={false}
         ></AtSwitch>
 
+        <View className="at-icon at-icon-image">封面(点击图片更改)</View>
+        <View className="previewImage">
+          <Image src={thumb} className="image" mode="aspectFill"></Image>
+        </View>
+
         <View className="photoContainer">
           {this.isEditPage && (
             <AtImagePicker
               files={existImageFiles}
               onChange={this.onRemoveExistImage}
               showAddBtn={false}
+              onImageClick={this.setAsPreviewImage(true)}
             />
           )}
           <AtImagePicker
             multiple
             files={newImageFiles}
             onChange={this.onImagePickerChange}
+            onImageClick={this.setAsPreviewImage(false)}
           />
           {this.isEditPage && (
             <View className="videoContainer">
