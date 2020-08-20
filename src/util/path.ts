@@ -12,6 +12,7 @@ const _path = {
   individual: ('/pages/individual/index' as any) as PathGoMethod,
   tagManagement: ('/pages/tagManagement/index' as any) as PathGoMethod,
   expressTask: ('/pages/expressTask/index' as any) as PathGoMethod,
+  coupon: ('/pages/coupon/index' as any) as PathGoMethod,
 }
 
 type PathGoMethod = {

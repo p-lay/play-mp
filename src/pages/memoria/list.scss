@@ -57,6 +57,10 @@
     position: fixed;
     right: 20px;
     bottom: 20px;
+    &.couponBtn {
+      right: 20px;
+      bottom: 390px;
+    }
     &.expressTaskBtn {
       right: 20px;
       bottom: 270px;
