@@ -1,5 +1,5 @@
 import { redirectTo, navigateTo } from '@tarojs/taro'
-import { stringify } from 'querystring'
+import { stringify } from 'querystringify'
 import { getStore } from '../store'
 
 const _path = {

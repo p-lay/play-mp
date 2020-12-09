@@ -40,9 +40,11 @@
     "nervjs": "^1.4.0",
     "nest-ts-code-gen": "^1.0.2",
     "prettier": "^1.18.2",
+    "querystringify": "^2.2.0",
     "taro-ui": "^2.2.1"
   },
   "devDependencies": {
+    "@tarojs/cli": "1.3.4",
     "@tarojs/plugin-babel": "1.3.4",
     "@tarojs/plugin-csso": "1.3.4",
     "@tarojs/plugin-sass": "1.3.4",
