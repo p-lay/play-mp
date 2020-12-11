@@ -22,7 +22,7 @@ pipeline {
       }
 
       steps {
-        build()
+        buildPkg()
         deploy()
       }
     }
@@ -45,7 +45,7 @@ def setup() {
   sh 'yarn install'
 }
 
-def build() {
+def buildPkg() {
   sh "rm -rf ./dist"
   sh 'yarn build:prod'
 }
