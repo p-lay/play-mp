@@ -11,7 +11,9 @@ pipeline {
   stages {
     stage('Setup') {
       steps {
-        setup()
+        nodejs('nodejs') {
+          setup()
+        }
       }
     }
 
