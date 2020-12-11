@@ -1,11 +1,11 @@
 pipeline {
+  agent { node('master')}
+  triggers {
+      pollSCM('* * * * *')
+  }
   environment {
     CI_COMMIT_SHA = 'ci_commit_hash'
     COMMIT_CHECKOUT = 'commit_checkout_version'
-  }
-  options {
-    buildDiscarder logRotator(artifactDaysToKeepStr: '50', artifactNumToKeepStr: '50', daysToKeepStr: '90', numToKeepStr: '5')
-    timeout(time: 1, unit: 'DAYS')
   }
 
   stages {
