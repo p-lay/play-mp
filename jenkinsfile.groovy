@@ -1,5 +1,4 @@
 pipeline {
-  agent none
   environment {
     CI_COMMIT_SHA = 'ci_commit_hash'
     COMMIT_CHECKOUT = 'commit_checkout_version'
