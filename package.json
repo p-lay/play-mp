@@ -10,8 +10,8 @@
   },
   "main": "index.js",
   "scripts": {
-    "build:local": "cross-env NODE_ENV=LOCAL taro build --type weapp",
-    "build:prod": "cross-env NODE_ENV=PROD taro build --type weapp",
+    "build:local": "NODE_ENV=LOCAL taro build --type weapp",
+    "build:prod": "NODE_ENV=PROD taro build --type weapp",
     "local": "yarn build:local --watch",
     "prod": "yarn build:prod --watch",
     "gen": "git submodule update --remote && ts-node type.gen.ts"
