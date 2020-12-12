@@ -23,8 +23,10 @@ pipeline {
       }
 
       steps {
-        buildPkg()
-        deploy()
+        nodejs('nodejs') {
+          buildPkg()
+          deploy()
+        }
       }
     }
   }
