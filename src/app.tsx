@@ -23,7 +23,6 @@ class App extends Component {
       'pages/memoria/detail/index',
       'pages/individual/index',
       'pages/tagManagement/index',
-      'pages/expressTask/index',
       'pages/coupon/index',
     ],
     window: {
