@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro'
 import { View, Video, Image, Swiper, SwiperItem } from '@tarojs/components'
 import { Component, observer } from '@p/util/component'
 import { AtIcon } from 'taro-ui'
-import { debounce } from '@u/common'
+import { debounce } from 'lodash'
 import cns from 'classnames'
 import { parseDownloadUrl } from '@/config'
 

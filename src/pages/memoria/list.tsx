@@ -149,11 +149,12 @@ class MemoriaList extends Component<Props, State> {
     Taro.showLoading({
       title: '加载中...',
     })
-    const res = await request('searchMemoria', {
+    await request('searchMemoria', {
       tag_ids: this.confirmedTagIds,
-    })
-    this.setState({
-      memorias: res.memorias,
+    }).then(res => {
+      this.setState({
+        memorias: res.memorias,
+      })
     })
     Taro.hideLoading()
   }
