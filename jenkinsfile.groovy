@@ -60,5 +60,5 @@ def deploy() {
   String version = "${branch}.${CI_COMMIT_SHA}"
   String description = sh(returnStdout: true, script: 'git log --pretty=format:"[%h][%an] (%s)" -1').trim().replaceAll("\"", "")
 
-  sh """node deploy/deploy.js deploy --versions \"${version}\" --descriptions \"${description}\" --robot 3 --private-key ${WX_UPLOAD_SECRET}"""
+  sh """node deploy/deploy.js deploy --versions \"${version}\" --descriptions \"${description}\" --robot 2 --private-key ${WX_UPLOAD_SECRET}"""
 }
