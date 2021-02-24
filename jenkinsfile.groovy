@@ -1,9 +1,9 @@
 pipeline {
   agent { node('master')}
   
-  // parameters {
-  //   string(name: 'MP_VERSION', defaultValue: '', description: 'like 1.0.0')
-  // }
+  parameters {
+    string(name: 'MP_VERSION', defaultValue: '', description: 'like 1.0.0')
+  }
 
   environment {
     CI_COMMIT_SHA = 'ci_commit_hash'
@@ -56,9 +56,7 @@ def buildPkg() {
 }
 
 def deploy() {
-  String branch = """${GIT_BRANCH.replace('origin/', '').replace('/', '')}"""
-  String version = "${branch}.${CI_COMMIT_SHA}"
   String description = sh(returnStdout: true, script: 'git log --pretty=format:"[%h][%an] (%s)" -1').trim().replaceAll("\"", "")
 
-  sh """node deploy/deploy.js deploy --versions \"${version}\" --descriptions \"${description}\" --robot 2 --private-key ${WX_UPLOAD_SECRET}"""
+  sh """node deploy/deploy.js deploy --versions \"${MP_VERSION}\" --descriptions \"${description}\" --robot 2 --private-key ${WX_UPLOAD_SECRET}"""
 }

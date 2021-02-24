@@ -50,14 +50,13 @@ async function deploy(command, args) {
     onProgressUpdate: () => {}
   }
 
-  console.log('___________robot______________', robot)
   const [, uploaded] = await Promise.all([
     ci.preview({
       ...options,
       qrcodeFormat: 'terminal',
       qrcodeOutputDest: path.resolve(__dirname, './preview'),
     }),
-    ci.upload({...options, robot:2})]
+    ci.upload({...options, robot})]
   );
 
   displayPackageInfo(uploaded)
