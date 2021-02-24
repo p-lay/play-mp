@@ -2,6 +2,12 @@ pipeline {
   agent { node('master')}
   
   parameters {
+    choice(
+      name: 'MP_ENV',
+      choices: ['uat', 'prod']
+      description: 'choose build environment',
+    )
+    string(name: 'MP_VERSION', defaultValue: '', description: 'input version like 1.0.0')
     string(name: 'MP_VERSION', defaultValue: '', description: 'like 1.0.0')
   }
 
@@ -19,7 +25,7 @@ pipeline {
       }
     }
 
-    stage('Deploy') {
+    stage("Deploy to ${MP_ENV.toUpperCase()}") {
       environment {
         WX_UPLOAD_SECRET = credentials('WX_UPLOAD_SECRET')
       }
@@ -56,6 +62,7 @@ def buildPkg() {
 }
 
 def deploy() {
+  echo """${MP_ENV}"""
   String description = sh(returnStdout: true, script: 'git log --pretty=format:"[%h][%an] (%s)" -1').trim().replaceAll("\"", "")
 
   sh """node deploy/deploy.js deploy --versions \"${MP_VERSION}\" --descriptions \"${description}\" --robot 2 --private-key ${WX_UPLOAD_SECRET}"""
