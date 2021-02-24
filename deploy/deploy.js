@@ -38,6 +38,7 @@ async function deploy(command, args) {
   const version = options.versions || Date.now()
   const description = options.descriptions || 'Not Provide.'
   const project = getProject(privateKey)
+  const robot = options.robot || 1
 
   options = {
     project,
@@ -55,7 +56,7 @@ async function deploy(command, args) {
       qrcodeFormat: 'terminal',
       qrcodeOutputDest: path.resolve(__dirname, './preview'),
     }),
-    ci.upload({...options})]
+    ci.upload({...options, robot})]
   );
 
   displayPackageInfo(uploaded)
@@ -72,6 +73,7 @@ commander.program
   .option('--versions', '小程序版本')
   .option('--descriptions', '小程序描述')
   .option('--private-key', '密钥，用于代码上传')
+  .option('--robot', '制定上传机器人编号，默认为1', '1')
   .description('上传小程序代码')
   .action((...args) => {
     deploy(...args).catch(e => {
