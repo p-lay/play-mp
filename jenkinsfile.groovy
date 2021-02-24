@@ -1,9 +1,9 @@
 pipeline {
   agent { node('master')}
   
-  parameters {
-    string(name: 'MP_VERSION', defaultValue: '', description: 'like 1.0.0')
-  }
+  // parameters {
+  //   string(name: 'MP_VERSION', defaultValue: '', description: 'like 1.0.0')
+  // }
 
   environment {
     CI_COMMIT_SHA = 'ci_commit_hash'
