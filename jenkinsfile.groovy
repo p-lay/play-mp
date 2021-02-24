@@ -21,7 +21,7 @@ pipeline {
       }
     }
 
-    stage("""Deploy to ${MP_ENV.toUpperCase()}""") {
+    stage('Deploy') {
       environment {
         WX_UPLOAD_SECRET = credentials('WX_UPLOAD_SECRET')
       }
