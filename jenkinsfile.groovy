@@ -51,14 +51,14 @@ def setup() {
 }
 
 def buildPkg() {
-  sh "rm -rf ./dist"
-  sh 'yarn build:prod'
+  // sh "rm -rf ./dist"
+  // sh 'yarn build:prod'
 }
 
 def deploy() {
-  String branch = """${GIT_BRANCH.replace('origin/', '').replace('/', '')}"""
+  // String branch = """${GIT_BRANCH.replace('origin/', '').replace('/', '')}"""
   // String version = "${branch}.${CI_COMMIT_SHA}"
   String description = sh(returnStdout: true, script: 'git log --pretty=format:"[%h][%an] (%s)" -1').trim().replaceAll("\"", "")
 
-  sh """node deploy/deploy.js deploy --versions \"${MP_VERSION}\" --descriptions \"${description}\" --robot 2 --private-key ${WX_UPLOAD_SECRET}"""
+  sh """node deploy/deploy.js deploy --versions \"${MP_VERSION}\" --descriptions \"${description}\" --robot \"2\" --private-key ${WX_UPLOAD_SECRET}"""
 }
