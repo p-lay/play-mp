@@ -73,10 +73,11 @@ commander.program
   .allowUnknownOption(true)
   .option('--versions', '小程序版本')
   .option('--descriptions', '小程序描述')
-  .option('--private-key', '密钥，用于代码上传')
   .option('--robot', '制定上传机器人编号，默认为1', '1')
+  .option('--private-key', '密钥，用于代码上传')
   .description('上传小程序代码')
   .action((...args) => {
+    console.log('start deploy')
     deploy(...args).catch(e => {
       setTimeout(() => {
         throw e
