@@ -60,6 +60,6 @@ def buildPkg() {
 def deploy() {
   echo """${MP_ENV}"""
   String description = sh(returnStdout: true, script: 'git log --pretty=format:"[%h][%an] (%s)" -1').trim().replaceAll("\"", "")
-
-  sh """node deploy/deploy.js deploy --versions \"${MP_VERSION}\" --descriptions \"${description}\" --robot 2 --private-key ${WX_UPLOAD_SECRET}"""
+  String robot = """${MP_ENV}""" == 'prod' ? '2' : '1'
+  sh """node deploy/deploy.js deploy --versions \"${MP_VERSION}\" --descriptions \"${description}\" --robot \"${robot}\" --private-key ${WX_UPLOAD_SECRET}"""
 }
