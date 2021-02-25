@@ -4,7 +4,6 @@ pipeline {
   parameters {
     choice(name: 'MP_ENV', choices: ['uat', 'prod'], description: 'choose build environment')
     string(name: 'MP_VERSION', defaultValue: '', description: 'input version like 1.0.0')
-    string(name: 'MP_VERSION', defaultValue: '', description: 'like 1.0.0')
   }
 
   environment {
